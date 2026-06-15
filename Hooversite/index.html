@@ -30,6 +30,7 @@
   </header>
 
 
+
   <!-- GALLERY -->
 <div class="section-label">// gallery index</div>
 <div class="media-grid" id="mediaGrid">
@@ -37,12 +38,9 @@
 </div>
 
   <!-- PLAYER -->
-    <div class="section-label">// now playing</div>
-  <div class="player-area" id="playerArea">
-    <div class="player-screen" id="playerScreen">
-      <div class="scanline"></div>
-      <video id="player" playsinline></video>
-    </div>
+  <div class="section-label">// now playing</div>
+  <div class="player-area">
+
    <!-- Video player (shown for video items) -->
 <div class="player-screen" id="playerScreen">
   <div class="scanline"></div>
@@ -50,14 +48,14 @@
   </video>
 </div>
 
-    <!-- PHOTO VIEW (shown instead of player for images) -->
-  <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
-    <img id="photoImg" src="" alt=""
-         style="width:100%; display:block; border:1px solid var(--border);" />
-  </div>
+    <!-- Photo display (shown for image items) -->
+    <div class="photo-display" id="photoDisplay">
+      <div class="scanline"></div>
+      <img id="photoImg" src="" alt="" />
+    </div>
 
     <!-- Custom control bar -->
-    <div class="player-bar" id="playerBar">
+    <div class="player-bar">
       <div class="bar-top">
         <div class="bar-seg">
           <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
