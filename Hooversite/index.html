@@ -22,15 +22,16 @@
   <header class="site-header">
     <div class="site-logo">MEDIA_SYS</div>
     <ul class="site-nav" id="filterNav">
+      <li class="active" data-filter="all">all</li>
+      <li data-filter="vid">video</li>
+      <li data-filter="img">photo</li>
     </ul>
     <div class="site-status">status: <span>online</span></div>
   </header>
 
   <!-- GALLERY -->
   <div class="section-label">// gallery index</div>
-  <div class="media-grid" id="mediaGrid"></div>
-  
-   
+  <div class="media-grid" id="mediaGrid">
 
   <!-- GALLERY -->
 <div class="section-label">// gallery index</div>
@@ -40,7 +41,7 @@
 
   <!-- PLAYER -->
   <div class="section-label">// now playing</div>
-  <div class="player-area" id="playerArea">
+  <div class="player-area">
 
     <!-- Video player (shown for video items) -->
    <!-- Video player (shown for video items) -->
@@ -50,8 +51,14 @@
   </video>
 </div>
 
+    <!-- Photo display (shown for image items) -->
+    <div class="photo-display" id="photoDisplay">
+      <div class="scanline"></div>
+      <img id="photoImg" src="" alt="" />
+    </div>
+
     <!-- Custom control bar -->
-    <div class="player-bar" id="playerBar">
+    <div class="player-bar">
       <div class="bar-top">
         <div class="bar-seg">
           <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
@@ -86,12 +93,6 @@
 
   </div><!-- /player-area -->
 
-   <!-- PHOTO VIEW (shown instead of player for images) -->
-    <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
-    <img id="photoImg" src="" alt=""
-         style="width:100%; display:block; border:1px solid var(--border);" />
-  </div>
-
   <!-- META -->
   <div class="meta-bar">
     <span class="meta-filename" id="metaFilename">clip_01.mp4</span>
@@ -110,3 +111,4 @@
   <script src="js/player.js"></script>
 </body>
 </html>
+
