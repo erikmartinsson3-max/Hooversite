@@ -2,9 +2,9 @@
   'use strict';
 
   /* ── CONFIG ── */
-  const BLOCKS     = 28;  // number of progress segments
-  const SKIP_SEC   = 10;  // seconds to skip on ◄◄ / ►► buttons
-  const TICK_COUNT = 5;   // number of tick labels on progress bar
+  const BLOCKS     = 28;
+  const SKIP_SEC   = 10;
+  const TICK_COUNT = 5;
 
   /* ── ELEMENTS ── */
   const grid          = document.getElementById('mediaGrid');
@@ -99,20 +99,19 @@
   /* ── BUILD THUMBNAIL ELEMENT ── */
   function buildThumb(item, index) {
     const div = document.createElement('div');
-    div.className    = 'media-thumb' + (index === 0 ? ' active' : '');
-    div.dataset.type = item.type;
-    div.dataset.src  = item.src;
+    div.className     = 'media-thumb' + (index === 0 ? ' active' : '');
+    div.dataset.type  = item.type;
+    div.dataset.src   = item.src;
     div.dataset.label = item.label || item.src.split('/').pop();
     div.dataset.info  = item.info  || '';
     div.dataset.tags  = item.tags  || '';
+    div.dataset.tab   = item.tab   || 'all';
 
-    // Type badge
     const badge = document.createElement('span');
     badge.className   = 'thumb-type';
     badge.textContent = item.type;
     div.appendChild(badge);
 
-    // Optional thumbnail image
     if (item.thumbnail) {
       const img = document.createElement('img');
       img.src = item.thumbnail;
@@ -120,7 +119,6 @@
       div.appendChild(img);
     }
 
-    // Icon + label overlay
     const inner = document.createElement('div');
     inner.className = 'thumb-inner';
     inner.innerHTML = `
@@ -132,6 +130,28 @@
     return div;
   }
 
+  /* ── BUILD TABS FROM JSON DATA ── */
+  function buildTabs(items) {
+    // Collect unique tab names in the order they appear
+    const seen = [];
+    items.forEach(item => {
+      const tab = item.tab || 'all';
+      if (!seen.includes(tab)) seen.push(tab);
+    });
+
+
+  
+ 
+  }
+
+  /* ── FILTER GRID BY TAB ── */
+  function filterByTab(tabName) {
+    document.querySelectorAll('.media-thumb').forEach(thumb => {
+      const match = tabName === 'all' || thumb.dataset.tab === tabName;
+      thumb.style.display = match ? '' : 'none';
+    });
+  }
+
   /* ── LOAD MEDIA FROM JSON ── */
   fetch('media.json')
     .then(res => {
@@ -139,26 +159,26 @@
       return res.json();
     })
     .then(data => {
-      grid.innerHTML = ''; // clear any placeholder thumbs from HTML
+      grid.innerHTML = '';
 
       if (!data.items || data.items.length === 0) {
         grid.innerHTML = '<p style="color:var(--muted);font-size:11px;padding:1rem;">no media found — add items to media.json</p>';
         return;
       }
 
+      // Build tabs from data
+      buildTabs(data.items);
+
+      // Build thumbnails
       data.items.forEach((item, index) => {
         const thumb = buildThumb(item, index);
         grid.appendChild(thumb);
       });
 
-      // Auto-load first item
+      // Load first item into player
       const first = grid.querySelector('.media-thumb');
       if (first) {
-        if (first.dataset.type === 'vid') {
-          loadVideo(first);
-        } else {
-          loadPhoto(first);
-        }
+        first.dataset.type === 'vid' ? loadVideo(first) : loadPhoto(first);
       }
     })
     .catch(err => {
@@ -209,24 +229,18 @@
     document.querySelectorAll('.media-thumb').forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
 
-    if (thumb.dataset.type === 'vid') {
-      loadVideo(thumb);
-    } else {
-      loadPhoto(thumb);
-    }
+    thumb.dataset.type === 'vid' ? loadVideo(thumb) : loadPhoto(thumb);
   });
 
-  /* ── FILTER NAV ── */
+  /* ── TAB CLICK ── */
   filterNav.addEventListener('click', function (e) {
     const li = e.target.closest('li');
     if (!li) return;
+
     document.querySelectorAll('#filterNav li').forEach(l => l.classList.remove('active'));
     li.classList.add('active');
-    const filter = li.dataset.filter;
-    document.querySelectorAll('.media-thumb').forEach(thumb => {
-      const match = filter === 'all' || thumb.dataset.type === filter;
-      thumb.style.display = match ? '' : 'none';
-    });
+
+    filterByTab(li.dataset.tab);
   });
 
   /* ── CONTROLS ── */

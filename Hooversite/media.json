@@ -5,7 +5,8 @@
       "src": "videos1/goarer.mov",
       "label": "goarer.mov",
       "info": "1280×720 · h.264 · 30fps",
-      "tags": "goar,2024"
+      "tags": "goar,2024",
+      "tab" : "misc film"
     },
     {
       "type": "img",
@@ -13,7 +14,8 @@
       "label": "IMG_2004.jpg",
       "info": "3000×3000 · jpg",
       "tags": "fistfight,2025",
-      "thumbnail": "pictures/IMG_2004.jpg"
+      "thumbnail": "pictures/IMG_2004.jpg",
+      "tab" : "2025 arkitektur"
     }
   ]
 }
