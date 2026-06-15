@@ -166,7 +166,6 @@
       border: 1px solid var(--border);
       margin-bottom: 1.5rem;
       overflow: hidden;
-      display: none;
     }
 
     /* Video player wrapper */
