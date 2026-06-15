@@ -139,9 +139,17 @@
       if (!seen.includes(tab)) seen.push(tab);
     });
 
+    // Always put 'all' first
+    filterNav.innerHTML = '';
+    const allTabs = ['all', ...seen.filter(t => t !== 'all')];
 
-  
- 
+    allTabs.forEach((tabName, i) => {
+      const li = document.createElement('li');
+      li.textContent      = tabName;
+      li.dataset.tab      = tabName;
+      if (i === 0) li.classList.add('active');
+      filterNav.appendChild(li);
+    });
   }
 
   /* ── FILTER GRID BY TAB ── */
