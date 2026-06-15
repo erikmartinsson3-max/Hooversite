@@ -2,9 +2,9 @@
   'use strict';
 
   /* ── CONFIG ── */
-  const BLOCKS      = 28;   // number of progress segments
-  const SKIP_SEC    = 10;   // seconds to skip on ◄◄ / ►► buttons
-  const TICK_COUNT  = 5;    // number of tick labels on progress bar
+  const BLOCKS     = 28;  // number of progress segments
+  const SKIP_SEC   = 10;  // seconds to skip on ◄◄ / ►► buttons
+  const TICK_COUNT = 5;   // number of tick labels on progress bar
 
   /* ── ELEMENTS ── */
   const grid          = document.getElementById('mediaGrid');
@@ -40,28 +40,27 @@
 
   /* ── PLYR INIT ── */
   const plyr = new Plyr('#player', {
-    controls: [],          // we provide our own
+    controls: [],
     keyboard: { focused: true, global: false },
     tooltips: { controls: false, seek: false },
   });
 
   /* ── STATE ── */
-  let currentType   = 'vid';
-  let isPhotoMode   = false;
-  let volume        = 1.0;
-  let muted         = false;
+  let isPhotoMode = false;
+  let volume      = 1.0;
+  let muted       = false;
 
   /* ── HELPERS ── */
   function fmt(sec) {
     if (!isFinite(sec) || isNaN(sec)) return '00:00';
     const m = Math.floor(sec / 60);
     const s = Math.floor(sec % 60);
-    return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
   function updateProgress() {
     if (isPhotoMode) return;
-    const dur  = plyr.duration  || 0;
+    const dur  = plyr.duration    || 0;
     const cur  = plyr.currentTime || 0;
     const pct  = dur > 0 ? cur / dur : 0;
     const fill = Math.round(pct * BLOCKS);
@@ -70,17 +69,13 @@
       b.classList.toggle('filled', i < fill);
     });
 
-    // Time display
     timeDisplay.innerHTML = fmt(cur) + ' / ' + fmt(dur) + '<span class="blink">_</span>';
+    progEnd.textContent   = fmt(dur);
 
-    // End label
-    progEnd.textContent = fmt(dur);
-
-    // Tick labels
     const ticks = document.querySelectorAll('.prog-tick');
     ticks.forEach((t, i) => {
       const ratio = i / (ticks.length - 1);
-      t.textContent = i === 0 || i === ticks.length - 1 ? '' : fmt(ratio * dur);
+      t.textContent = (i === 0 || i === ticks.length - 1) ? '' : fmt(ratio * dur);
     });
   }
 
@@ -94,12 +89,82 @@
     volDisplay.textContent = 'VOL:' + String(pct).padStart(3, '0');
   }
 
-  function setMeta(thumb) {
-    metaFilename.textContent = thumb.dataset.label  || '';
-    metaInfo.textContent     = thumb.dataset.info   || '';
-    const tags = (thumb.dataset.tags || '').split(',').filter(Boolean);
+  function setMeta(item) {
+    metaFilename.textContent = item.label || '';
+    metaInfo.textContent     = item.info  || '';
+    const tags = (item.tags || '').split(',').filter(Boolean);
     tagRow.innerHTML = tags.map(t => `<span class="tag">${t.trim()}</span>`).join('');
   }
+
+  /* ── BUILD THUMBNAIL ELEMENT ── */
+  function buildThumb(item, index) {
+    const div = document.createElement('div');
+    div.className    = 'media-thumb' + (index === 0 ? ' active' : '');
+    div.dataset.type = item.type;
+    div.dataset.src  = item.src;
+    div.dataset.label = item.label || item.src.split('/').pop();
+    div.dataset.info  = item.info  || '';
+    div.dataset.tags  = item.tags  || '';
+
+    // Type badge
+    const badge = document.createElement('span');
+    badge.className   = 'thumb-type';
+    badge.textContent = item.type;
+    div.appendChild(badge);
+
+    // Optional thumbnail image
+    if (item.thumbnail) {
+      const img = document.createElement('img');
+      img.src = item.thumbnail;
+      img.alt = div.dataset.label;
+      div.appendChild(img);
+    }
+
+    // Icon + label overlay
+    const inner = document.createElement('div');
+    inner.className = 'thumb-inner';
+    inner.innerHTML = `
+      <span class="thumb-ascii">${item.type === 'vid' ? '&#x25B6;' : '&#x25A0;'}</span>
+      <span class="thumb-label">${div.dataset.label}</span>
+    `;
+    div.appendChild(inner);
+
+    return div;
+  }
+
+  /* ── LOAD MEDIA FROM JSON ── */
+  fetch('media.json')
+    .then(res => {
+      if (!res.ok) throw new Error('media.json not found');
+      return res.json();
+    })
+    .then(data => {
+      grid.innerHTML = ''; // clear any placeholder thumbs from HTML
+
+      if (!data.items || data.items.length === 0) {
+        grid.innerHTML = '<p style="color:var(--muted);font-size:11px;padding:1rem;">no media found — add items to media.json</p>';
+        return;
+      }
+
+      data.items.forEach((item, index) => {
+        const thumb = buildThumb(item, index);
+        grid.appendChild(thumb);
+      });
+
+      // Auto-load first item
+      const first = grid.querySelector('.media-thumb');
+      if (first) {
+        if (first.dataset.type === 'vid') {
+          loadVideo(first);
+        } else {
+          loadPhoto(first);
+        }
+      }
+    })
+    .catch(err => {
+      console.error('Could not load media.json:', err);
+      grid.innerHTML = '<p style="color:var(--rec);font-size:11px;padding:1rem;">error: could not load media.json</p>';
+    });
 
   /* ── SWITCH TO VIDEO ── */
   function loadVideo(thumb) {
@@ -116,7 +181,7 @@
       updateProgress();
       plyr.play();
     });
-    setMeta(thumb);
+    setMeta(thumb.dataset);
     updatePlayBtn();
   }
 
@@ -128,12 +193,11 @@
     photoDisplay.classList.add('active');
     photoImg.src = thumb.dataset.src;
     photoImg.alt = thumb.dataset.label || '';
-    setMeta(thumb);
+    setMeta(thumb.dataset);
 
-    // Reset progress bar for photo mode
     document.querySelectorAll('.prog-block').forEach(b => b.classList.remove('filled'));
     timeDisplay.innerHTML = '-- / --<span class="blink">_</span>';
-    progEnd.textContent = '--:--';
+    progEnd.textContent   = '--:--';
     document.querySelectorAll('.prog-tick').forEach(t => { t.textContent = ''; });
     updatePlayBtn();
   }
@@ -166,30 +230,28 @@
     });
   });
 
-  /* ── PLAY / PAUSE ── */
+  /* ── CONTROLS ── */
   btnPlay.addEventListener('click', function () {
     if (isPhotoMode) return;
     plyr.togglePlay();
   });
 
-  /* ── REWIND / SKIP ── */
   btnRew.addEventListener('click', function () {
     if (isPhotoMode) return;
     plyr.currentTime = Math.max(0, plyr.currentTime - SKIP_SEC);
   });
+
   btnFwd.addEventListener('click', function () {
     if (isPhotoMode) return;
     plyr.currentTime = Math.min(plyr.duration || 0, plyr.currentTime + SKIP_SEC);
   });
 
-  /* ── VOLUME CLICK (toggle mute) ── */
   volDisplay.addEventListener('click', function () {
     muted = !muted;
     plyr.muted = muted;
     updateVol();
   });
 
-  /* ── FULLSCREEN ── */
   btnFs.addEventListener('click', function () {
     if (isPhotoMode) {
       if (!document.fullscreenElement) {
@@ -202,7 +264,6 @@
     }
   });
 
-  /* ── PROGRESS TRACK CLICK (seek) ── */
   progressTrack.addEventListener('click', function (e) {
     if (isPhotoMode || !plyr.duration) return;
     const rect = progressTrack.getBoundingClientRect();
@@ -211,12 +272,12 @@
   });
 
   /* ── PLYR EVENTS ── */
-  plyr.on('timeupdate', updateProgress);
+  plyr.on('timeupdate',     updateProgress);
   plyr.on('loadedmetadata', updateProgress);
-  plyr.on('play',  updatePlayBtn);
-  plyr.on('pause', updatePlayBtn);
-  plyr.on('ended', updatePlayBtn);
-  plyr.on('volumechange', function () {
+  plyr.on('play',           updatePlayBtn);
+  plyr.on('pause',          updatePlayBtn);
+  plyr.on('ended',          updatePlayBtn);
+  plyr.on('volumechange',   function () {
     volume = plyr.volume;
     muted  = plyr.muted;
     updateVol();
