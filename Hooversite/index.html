@@ -50,12 +50,6 @@
   </video>
 </div>
 
-    <!-- Photo display (shown for image items) -->
-    <div class="photo-display" id="photoDisplay">
-      <div class="scanline"></div>
-      <img id="photoImg" src="" alt="" />
-    </div>
-
     <!-- Custom control bar -->
     <div class="player-bar" id="playerBar">
       <div class="bar-top">
@@ -91,6 +85,12 @@
     </div>
 
   </div><!-- /player-area -->
+
+   <!-- PHOTO VIEW (shown instead of player for images) -->
+    <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
+    <img id="photoImg" src="" alt=""
+         style="width:100%; display:block; border:1px solid var(--border);" />
+  </div>
 
   <!-- META -->
   <div class="meta-bar">
