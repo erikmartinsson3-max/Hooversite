@@ -195,11 +195,12 @@
       background: #000;
       position: relative;
     }
-    .photo-display.active {
-      max-width: 1000px;
-      max-height: 1000px;
-      object-fit: contain;
-    }
+    .photo-display.active {  display: none;
+  aspect-ratio: 16/9;
+  height: 500px;
+  align-items: center;
+  justify-content: center;
+  background: #000; }
     .photo-display img {
       max-width: 100%;
       max-height: 100%;
