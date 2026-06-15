@@ -10,8 +10,6 @@
   const grid          = document.getElementById('mediaGrid');
   const filterNav     = document.getElementById('filterNav');
   const playerScreen  = document.getElementById('playerScreen');
-  const photoDisplay  = document.getElementById('photoDisplay');
-  const photoImg      = document.getElementById('photoImg');
   const progBlocks    = document.getElementById('progBlocks');
   const progTicks     = document.getElementById('progTicks');
   const progressTrack = document.getElementById('progressTrack');
@@ -25,6 +23,10 @@
   const btnRew        = document.getElementById('btnRew');
   const btnFwd        = document.getElementById('btnFwd');
   const btnFs         = document.getElementById('btnFs');
+  const lightbox      = document.getElementById('lightbox');
+  const lightboxPlayer = document.getElementById('lightboxPlayer');
+  const lightboxPhoto  = document.getElementById('lightboxPhoto');
+  const photoImg       = document.getElementById('photoImg');
 
   /* ── BUILD PROGRESS BLOCKS ── */
   for (let i = 0; i < BLOCKS; i++) {
@@ -49,8 +51,6 @@
   let isPhotoMode = false;
   let volume      = 1.0;
   let muted       = false;
-  document.getElementById('playerArea').style.display = 'none';
-  
 
   /* ── HELPERS ── */
   function fmt(sec) {
@@ -91,24 +91,72 @@
     volDisplay.textContent = 'VOL:' + String(pct).padStart(3, '0');
   }
 
-  function setMeta(item) {
-    metaFilename.textContent = item.label || '';
-    metaInfo.textContent     = item.info  || '';
-    const tags = (item.tags || '').split(',').filter(Boolean);
+  function setMeta(data) {
+    metaFilename.textContent = data.label || '';
+    metaInfo.textContent     = data.info  || '';
+    const tags = (data.tags || '').split(',').filter(Boolean);
     tagRow.innerHTML = tags.map(t => `<span class="tag">${t.trim()}</span>`).join('');
   }
 
-  /* ── BUILD THUMBNAIL ELEMENT ── */
-  function buildThumb(item, index) {
+  /* ── LIGHTBOX OPEN / CLOSE ── */
+  function openLightbox() {
+    lightbox.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // prevent background scroll
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+    plyr.pause();
+    document.querySelectorAll('.media-thumb').forEach(t => t.classList.remove('active'));
+  }
+
+  document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  /* ── SWITCH TO VIDEO ── */
+  function loadVideo(thumb) {
+    isPhotoMode = false;
+    lightboxPlayer.style.display = '';
+    lightboxPhoto.style.display  = 'none';
+
+    plyr.pause();
+    plyr.source = {
+      type: 'video',
+      sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
+    };
+    plyr.once('loadedmetadata', () => updateProgress());
+    setMeta(thumb.dataset);
+    updatePlayBtn();
+    openLightbox();
+  }
+
+  /* ── SWITCH TO PHOTO ── */
+  function loadPhoto(thumb) {
+    isPhotoMode = true;
+    plyr.pause();
+    lightboxPlayer.style.display = 'none';
+    lightboxPhoto.style.display  = '';
+    photoImg.src = thumb.dataset.src;
+    photoImg.alt = thumb.dataset.label || '';
+    setMeta(thumb.dataset);
+    openLightbox();
+  }
+
+  /* ── BUILD THUMBNAIL ── */
+  function buildThumb(item) {
     const div = document.createElement('div');
     div.className     = 'media-thumb';
-    div.style.display = 'none'; // hide until filtered
+    div.style.display = 'none';
     div.dataset.type  = item.type;
     div.dataset.src   = item.src;
     div.dataset.label = item.label || item.src.split('/').pop();
     div.dataset.info  = item.info  || '';
     div.dataset.tags  = item.tags  || '';
-    div.dataset.tab   = item.tab   || 'all';
+    div.dataset.tab   = item.tab   || '';
 
     const badge = document.createElement('span');
     badge.className   = 'thumb-type';
@@ -133,38 +181,34 @@
     return div;
   }
 
-  /* ── BUILD TABS FROM JSON DATA ── */
+  /* ── BUILD TABS ── */
   function buildTabs(items) {
-  const seen = [];
-  items.forEach(item => {
-    const tab = item.tab;
-    if (tab && !seen.includes(tab)) seen.push(tab);
-  });
+    const seen = [];
+    items.forEach(item => {
+      const tab = item.tab;
+      if (tab && !seen.includes(tab)) seen.push(tab);
+    });
 
-  filterNav.innerHTML = '';
-  seen.forEach((tabName, i) => {
-    const li = document.createElement('li');
-    li.textContent = tabName;
-    li.dataset.tab = tabName;
-    if (i === 0) li.classList.add('active');
-    filterNav.appendChild(li);
-  });
-}
+    filterNav.innerHTML = '';
+    seen.forEach((tabName, i) => {
+      const li = document.createElement('li');
+      li.textContent = tabName;
+      li.dataset.tab = tabName;
+      if (i === 0) li.classList.add('active');
+      filterNav.appendChild(li);
+    });
+  }
 
-  /* ── FILTER GRID BY TAB ── */
-function filterByTab(tabName) {
-  // hide player and photo when switching tabs
-  document.getElementById('playerArea').style.display = 'none';
-  document.getElementById('photoDisplay').style.display = 'none';
+  /* ── FILTER BY TAB ── */
+  function filterByTab(tabName) {
+    closeLightbox();
+    document.querySelectorAll('.media-thumb').forEach(thumb => {
+      thumb.style.display = thumb.dataset.tab === tabName ? '' : 'none';
+      thumb.classList.remove('active');
+    });
+  }
 
-  document.querySelectorAll('.media-thumb').forEach(thumb => {
-    const match = thumb.dataset.tab === tabName;
-    thumb.style.display = match ? '' : 'none';
-    thumb.classList.remove('active');
-  });
-}
-
-  /* ── LOAD MEDIA FROM JSON ── */
+  /* ── LOAD FROM media.json ── */
   fetch('media.json')
     .then(res => {
       if (!res.ok) throw new Error('media.json not found');
@@ -174,60 +218,31 @@ function filterByTab(tabName) {
       grid.innerHTML = '';
 
       if (!data.items || data.items.length === 0) {
-        grid.innerHTML = '<p style="color:var(--muted);font-size:11px;padding:1rem;">no media found — add items to media.json</p>';
+        grid.innerHTML = '<p style="color:var(--muted);font-size:11px;padding:1rem;">no media — add items to media.json</p>';
         return;
       }
 
-      // Build tabs from data
       buildTabs(data.items);
 
-      // Build thumbnails
-      data.items.forEach((item, index) => {
-        const thumb = buildThumb(item, index);
-        grid.appendChild(thumb);
+      data.items.forEach(item => {
+        grid.appendChild(buildThumb(item));
       });
 
-    
+      // Show items for first tab by default
+      const firstTab = filterNav.querySelector('li');
+      if (firstTab) filterByTab(firstTab.dataset.tab);
     })
     .catch(err => {
       console.error('Could not load media.json:', err);
       grid.innerHTML = '<p style="color:var(--rec);font-size:11px;padding:1rem;">error: could not load media.json</p>';
     });
 
-  /* ── SWITCH TO VIDEO ── */
-function loadVideo(thumb) {
-  isPhotoMode = false;
-  document.getElementById('playerArea').style.display = '';    // show player
-  document.getElementById('photoDisplay').style.display = 'none'; // hide photo
-  plyr.pause();
-  plyr.source = {
-    type: 'video',
-    sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
-  };
-  plyr.once('loadedmetadata', () => updateProgress());
-  setMeta(thumb.dataset);
-  updatePlayBtn();
-}
-
-  /* ── SWITCH TO PHOTO ── */
-  function loadPhoto(thumb) {
-  isPhotoMode = true;
-  plyr.pause();
-  document.getElementById('playerArea').style.display = 'none'; // hide player
-  document.getElementById('photoDisplay').style.display = '';   // show photo
-  photoImg.src = thumb.dataset.src;
-  photoImg.alt = thumb.dataset.label || '';
-  setMeta(thumb.dataset);
-}
-
   /* ── THUMBNAIL CLICK ── */
   grid.addEventListener('click', function (e) {
     const thumb = e.target.closest('.media-thumb');
     if (!thumb) return;
-
     document.querySelectorAll('.media-thumb').forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
-
     thumb.dataset.type === 'vid' ? loadVideo(thumb) : loadPhoto(thumb);
   });
 
@@ -235,10 +250,8 @@ function loadVideo(thumb) {
   filterNav.addEventListener('click', function (e) {
     const li = e.target.closest('li');
     if (!li) return;
-
     document.querySelectorAll('#filterNav li').forEach(l => l.classList.remove('active'));
     li.classList.add('active');
-
     filterByTab(li.dataset.tab);
   });
 
@@ -265,15 +278,7 @@ function loadVideo(thumb) {
   });
 
   btnFs.addEventListener('click', function () {
-    if (isPhotoMode) {
-      if (!document.fullscreenElement) {
-        photoDisplay.requestFullscreen && photoDisplay.requestFullscreen();
-      } else {
-        document.exitFullscreen && document.exitFullscreen();
-      }
-    } else {
-      plyr.fullscreen.toggle();
-    }
+    plyr.fullscreen.toggle();
   });
 
   progressTrack.addEventListener('click', function (e) {
@@ -300,3 +305,4 @@ function loadVideo(thumb) {
   updateProgress();
 
 })();
+/* intentional no-op — CSS is separate */
