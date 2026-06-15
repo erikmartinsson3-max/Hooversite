@@ -196,6 +196,7 @@
       aspect-ratio: 16/9;
       align-items: center;
       justify-content: center;
+      height: 500px;
       background: #000;
       position: relative;
       width: 80%;
