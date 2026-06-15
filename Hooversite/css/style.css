@@ -168,15 +168,17 @@
       border: 1px solid var(--border);
       margin-bottom: 1.5rem;
       overflow: hidden;
-      width:  1000px;
-      height: 1000px;
-      object-fit: contain;
+      width: 80%;
+      height: 80%;
     }
 
     /* Video player wrapper */
     .player-screen {
       position: relative;
       background: #000;
+      width:  1000px;
+       height: 1000px;
+       object-fit: contain;
     }
     .player-screen .scanline {
       position: absolute;
