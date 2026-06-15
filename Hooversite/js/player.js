@@ -179,7 +179,6 @@
     };
     plyr.once('loadedmetadata', () => {
       updateProgress();
-      plyr.play();
     });
     setMeta(thumb.dataset);
     updatePlayBtn();
