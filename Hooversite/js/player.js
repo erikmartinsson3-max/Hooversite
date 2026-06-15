@@ -191,39 +191,30 @@
     });
 
   /* ── SWITCH TO VIDEO ── */
-  function loadVideo(thumb) {
-    isPhotoMode = false;
-    playerScreen.style.display = '';
-    photoDisplay.classList.remove('active');
-
-    plyr.pause();
-    plyr.source = {
-      type: 'video',
-      sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
-    };
-    plyr.once('loadedmetadata', () => {
-      updateProgress();
-    });
-    setMeta(thumb.dataset);
-    updatePlayBtn();
-  }
+function loadVideo(thumb) {
+  isPhotoMode = false;
+  document.getElementById('playerArea').style.display = '';    // show player
+  document.getElementById('photoDisplay').style.display = 'none'; // hide photo
+  plyr.pause();
+  plyr.source = {
+    type: 'video',
+    sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
+  };
+  plyr.once('loadedmetadata', () => updateProgress());
+  setMeta(thumb.dataset);
+  updatePlayBtn();
+}
 
   /* ── SWITCH TO PHOTO ── */
   function loadPhoto(thumb) {
-    isPhotoMode = true;
-    plyr.pause();
-    playerScreen.style.display = 'none';
-    photoDisplay.classList.add('active');
-    photoImg.src = thumb.dataset.src;
-    photoImg.alt = thumb.dataset.label || '';
-    setMeta(thumb.dataset);
-
-    document.querySelectorAll('.prog-block').forEach(b => b.classList.remove('filled'));
-    timeDisplay.innerHTML = '-- / --<span class="blink">_</span>';
-    progEnd.textContent   = '--:--';
-    document.querySelectorAll('.prog-tick').forEach(t => { t.textContent = ''; });
-    updatePlayBtn();
-  }
+  isPhotoMode = true;
+  plyr.pause();
+  document.getElementById('playerArea').style.display = 'none'; // hide player
+  document.getElementById('photoDisplay').style.display = '';   // show photo
+  photoImg.src = thumb.dataset.src;
+  photoImg.alt = thumb.dataset.label || '';
+  setMeta(thumb.dataset);
+}
 
   /* ── THUMBNAIL CLICK ── */
   grid.addEventListener('click', function (e) {
