@@ -22,9 +22,6 @@
   <header class="site-header">
     <div class="site-logo">MEDIA_SYS</div>
     <ul class="site-nav" id="filterNav">
-      <li class="active" data-filter="all">all</li>
-      <li data-filter="vid">video</li>
-      <li data-filter="img">photo</li>
     </ul>
     <div class="site-status">status: <span>online</span></div>
   </header>
@@ -39,7 +36,7 @@
 
   <!-- PLAYER -->
   <div class="section-label">// now playing</div>
-  <div class="player-area">
+  <div class="player-area" id="playerArea">
 
    <!-- Video player (shown for video items) -->
 <div class="player-screen" id="playerScreen">
@@ -48,14 +45,10 @@
   </video>
 </div>
 
-    <!-- Photo display (shown for image items) -->
-    <div class="photo-display" id="photoDisplay">
-      <div class="scanline"></div>
-      <img id="photoImg" src="" alt="" />
-    </div>
+ 
 
     <!-- Custom control bar -->
-    <div class="player-bar">
+    <div class="player-bar" id="playerBar">
       <div class="bar-top">
         <div class="bar-seg">
           <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
@@ -90,15 +83,19 @@
 
   </div><!-- /player-area -->
 
+    <!-- PHOTO VIEW (replaces player when image is selected) -->
+  <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
+    <img id="photoImg" src="" alt=""
+         style="width:100%; display:block; border:1px solid var(--border);" />
+  </div>
+
   <!-- META -->
   <div class="meta-bar">
-    <span class="meta-filename" id="metaFilename">clip_01.mp4</span>
-    <span class="meta-info"     id="metaInfo">1920×1080 · h.264 · 48fps</span>
+    <span class="meta-filename" id="metaFilename"></span>
+    <span class="meta-info"     id="metaInfo"></span>
   </div>
   <div class="tag-row" id="tagRow">
-    <span class="tag">personal</span>
-    <span class="tag">2024</span>
-    <span class="tag">outdoor</span>
+    <!-- tags are loaded automatically from media.json -->
   </div>
 
 </div><!-- /shell -->
