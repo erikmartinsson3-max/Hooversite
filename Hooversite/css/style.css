@@ -14,7 +14,7 @@
       --muted:         #666666;
       --bar-bg:        #111111;
       --rec:           #cc3333;
-      --mono:          'Share Tech Mono', monospace;
+      --mono:          'cyrillic', monospace;
     }
 
     body {
