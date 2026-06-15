@@ -173,7 +173,11 @@
       // Build tabs from data
       buildTabs(data.items);
 
-    
+      // Build thumbnails
+      data.items.forEach((item, index) => {
+        const thumb = buildThumb(item, index);
+        grid.appendChild(thumb);
+      });
 
       // Load first item into player
       const first = grid.querySelector('.media-thumb');
