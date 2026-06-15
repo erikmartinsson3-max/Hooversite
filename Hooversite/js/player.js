@@ -49,6 +49,7 @@
   let isPhotoMode = false;
   let volume      = 1.0;
   let muted       = false;
+  
 
   /* ── HELPERS ── */
   function fmt(sec) {
