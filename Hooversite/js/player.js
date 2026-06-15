@@ -99,7 +99,8 @@
   /* ── BUILD THUMBNAIL ELEMENT ── */
   function buildThumb(item, index) {
     const div = document.createElement('div');
-    div.className     = 'media-thumb' + (index === 0 ? ' active' : '');
+    div.className     = 'media-thumb';
+    div.style.display = 'none'; // hide until filtered
     div.dataset.type  = item.type;
     div.dataset.src   = item.src;
     div.dataset.label = item.label || item.src.split('/').pop();
@@ -149,12 +150,17 @@
 }
 
   /* ── FILTER GRID BY TAB ── */
-  function filterByTab(tabName) {
-    document.querySelectorAll('.media-thumb').forEach(thumb => {
-      const match = tabName === 'all' || thumb.dataset.tab === tabName;
-      thumb.style.display = match ? '' : 'none';
-    });
-  }
+function filterByTab(tabName) {
+  // hide player and photo when switching tabs
+  document.getElementById('playerArea').style.display = 'none';
+  document.getElementById('photoDisplay').style.display = 'none';
+
+  document.querySelectorAll('.media-thumb').forEach(thumb => {
+    const match = thumb.dataset.tab === tabName;
+    thumb.style.display = match ? '' : 'none';
+    thumb.classList.remove('active');
+  });
+}
 
   /* ── LOAD MEDIA FROM JSON ── */
   fetch('media.json')
@@ -179,11 +185,7 @@
         grid.appendChild(thumb);
       });
 
-      // Load first item into player
-      const first = grid.querySelector('.media-thumb');
-      if (first) {
-        first.dataset.type === 'vid' ? loadVideo(first) : loadPhoto(first);
-      }
+    
     })
     .catch(err => {
       console.error('Could not load media.json:', err);
