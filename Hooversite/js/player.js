@@ -49,7 +49,7 @@
   let isPhotoMode = false;
   let volume      = 1.0;
   let muted       = false;
-  
+  document.getElementById('playerArea').style.display = 'none';
 
   /* ── HELPERS ── */
   function fmt(sec) {
