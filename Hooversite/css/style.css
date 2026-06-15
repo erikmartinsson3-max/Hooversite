@@ -97,8 +97,8 @@
       cursor: pointer;
       overflow: hidden;
       transition: border-color 0.15s;
-      width: 50%;
-      height: 50%;
+      width: 80%;
+      height: 80%;
     }
     .media-thumb:hover  { border-color: var(--accent-dim); }
     .media-thumb.active { border-color: var(--text); }
@@ -168,6 +168,8 @@
       border: 1px solid var(--border);
       margin-bottom: 1.5rem;
       overflow: hidden;
+      width: 80%;
+      height: 80%;
     }
 
     /* Video player wrapper */
@@ -196,6 +198,8 @@
       justify-content: center;
       background: #000;
       position: relative;
+      width: 80%;
+      height: 80%;
     }
     .photo-display.active { display: flex; }
     .photo-display img {
