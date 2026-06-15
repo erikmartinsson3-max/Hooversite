@@ -139,9 +139,6 @@
       if (!seen.includes(tab)) seen.push(tab);
     });
 
-    // Always put 'all' first
-    filterNav.innerHTML = '';
-    const allTabs = ['all', ...seen.filter(t => t !== 'all')];
 
     allTabs.forEach((tabName, i) => {
       const li = document.createElement('li');
