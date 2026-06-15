@@ -135,10 +135,13 @@
     // Collect unique tab names in the order they appear
     const seen = [];
     items.forEach(item => {
-      const tab = item.tab || 'all';
+      const tab = item.tab;
       if (!seen.includes(tab)) seen.push(tab);
     });
 
+    // Always put 'all' first
+    filterNav.innerHTML = '';
+    const allTabs = [, ...seen.filter(t => t)];
 
     allTabs.forEach((tabName, i) => {
       const li = document.createElement('li');
