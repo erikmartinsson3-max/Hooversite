@@ -132,25 +132,21 @@
 
   /* ── BUILD TABS FROM JSON DATA ── */
   function buildTabs(items) {
-    // Collect unique tab names in the order they appear
-    const seen = [];
-    items.forEach(item => {
-      const tab = item.tab;
-      if (!seen.includes(tab)) seen.push(tab);
-    });
+  const seen = [];
+  items.forEach(item => {
+    const tab = item.tab;
+    if (tab && !seen.includes(tab)) seen.push(tab);
+  });
 
-    // Always put 'all' first
-    filterNav.innerHTML = '';
-    const allTabs = [, ...seen.filter(t => t)];
-
-    allTabs.forEach((tabName, i) => {
-      const li = document.createElement('li');
-      li.textContent      = tabName;
-      li.dataset.tab      = tabName;
-      if (i === 0) li.classList.add('active');
-      filterNav.appendChild(li);
-    });
-  }
+  filterNav.innerHTML = '';
+  seen.forEach((tabName, i) => {
+    const li = document.createElement('li');
+    li.textContent = tabName;
+    li.dataset.tab = tabName;
+    if (i === 0) li.classList.add('active');
+    filterNav.appendChild(li);
+  });
+}
 
   /* ── FILTER GRID BY TAB ── */
   function filterByTab(tabName) {
