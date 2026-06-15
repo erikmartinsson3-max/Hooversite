@@ -195,8 +195,7 @@
       background: #000;
       position: relative;
     }
-    .photo-display.active { 
-      display: flex;
+    .photo-display.active {
       max-width: 1000px;
       max-height: 1000px;
       object-fit: contain;
