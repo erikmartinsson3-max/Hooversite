@@ -195,10 +195,15 @@
       background: #000;
       position: relative;
     }
-    .photo-display.active { display: flex; }
+    .photo-display.active { 
+      display: flex;
+      max-width: 1000px;
+      max-height: 1000px;
+      object-fit: contain;
+    }
     .photo-display img {
-      width: 1000px;
-      height: 1000px;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
       display: block;
     }
