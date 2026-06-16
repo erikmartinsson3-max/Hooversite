@@ -34,74 +34,31 @@
   <!-- thumbnails are loaded automatically from media.json -->
 </div>
 
-  <!-- PLAYER -->
-  <div class="section-label"></div>
-  <div class="player-area" id="playerArea">
-
-   <!-- Video player (shown for video items) -->
-<div class="player-screen" id="playerScreen">
-  <div class="scanline"></div>
-  <video id="player" playsinline>
-  </video>
-</div>
-
- 
-
-    <!-- Custom control bar -->
-    <div class="player-bar" id="playerBar">
-      <div class="bar-top">
-        <div class="bar-seg">
-          <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
-          <button class="ctrl-btn play-btn" id="btnPlay" aria-label="Play">&#x25B6;</button>
-          <button class="ctrl-btn" id="btnFwd"   aria-label="Skip forward">&#x25BA;&#x25BA;</button>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <span class="time-display" id="timeDisplay">00:00 / 00:00<span class="blink">_</span></span>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <span class="vol-display" id="volDisplay"
-                title="Click to toggle mute"
-                style="cursor:pointer">VOL:100</span>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <button class="ctrl-btn" id="btnFs" aria-label="Fullscreen">&#x25A1;</button>
-        </div>
-        <span class="rec-indicator"><span class="blink">&#x25A0;</span> REC</span>
-      </div>
-      <div class="bar-bottom">
-        <span class="prog-label">00:00</span>
-        <div class="progress-track" id="progressTrack">
-          <div class="prog-blocks" id="progBlocks"></div>
-          <div class="prog-ticks" id="progTicks"></div>
-        </div>
-        <span class="prog-label" id="progEnd">00:00</span>
-      </div>
-    </div>
-
-  </div><!-- /player-area -->
-
-    <!-- PHOTO VIEW (replaces player when image is selected) -->
-  <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
-  <img id="photoImg" src="" alt="" />
-</div>
-
-  <!-- META -->
-  <div class="meta-bar">
-    <span class="meta-filename" id="metaFilename"></span>
-    <span class="meta-info"     id="metaInfo"></span>
-  </div>
-  <div class="tag-row" id="tagRow">
-    <!-- tags are loaded automatically from media.json -->
-  </div>
-
 </div><!-- /shell -->
 
 <!-- Plyr -->
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   <script src="js/player.js"></script>
+
+
+  <!-- LIGHTBOX OVERLAY -->
+<div id="lightbox" style="display:none;">
+  <div id="lightboxBackdrop"></div>
+  <div id="lightboxContent">
+    <button id="lightboxClose">&#x2715;</button>
+    <div id="lightboxPlayer" style="display:none;">
+      <video id="player" playsinline></video>
+    </div>
+    <div id="lightboxPhoto" style="display:none;">
+      <img id="photoImg" src="" alt="" />
+    </div>
+    <div id="lightboxMeta">
+      <span id="metaFilename"></span>
+      <span id="metaInfo"></span>
+    </div>
+    <div id="lightboxTags" class="tag-row"></div>
+  </div>
+</div> 
 </body>
 </html>
 
