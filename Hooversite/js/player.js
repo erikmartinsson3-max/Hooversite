@@ -5,11 +5,15 @@
   const BLOCKS     = 28;
   const SKIP_SEC   = 10;
   const TICK_COUNT = 5;
-  document.getElementById('playerArea').style.display = 'none';
 
   /* ── ELEMENTS ── */
   const grid          = document.getElementById('mediaGrid');
   const filterNav     = document.getElementById('filterNav');
+  const modal          = document.getElementById('myModal');
+  const modalClose     = document.getElementById('modalClose');
+  const modalPrev      = document.getElementById('modalPrev');
+  const modalNext      = document.getElementById('modalNext');
+  const playerArea    = document.getElementById('playerArea');
   const playerScreen  = document.getElementById('playerScreen');
   const photoDisplay  = document.getElementById('photoDisplay');
   const photoImg      = document.getElementById('photoImg');
@@ -47,10 +51,12 @@
   });
 
   /* ── STATE ── */
+  let mediaItems  = [];   // full list, straight from media.json
+  let currentList = [];   // items in the active tab (what prev/next walks through)
+  let currentIndex = -1;  // position of the open item inside currentList
   let isPhotoMode = false;
   let volume      = 1.0;
   let muted       = false;
-  
 
   /* ── HELPERS ── */
   function fmt(sec) {
@@ -92,7 +98,7 @@
   }
 
   function setMeta(item) {
-    metaFilename.textContent = item.label || '';
+    metaFilename.textContent = item.label || item.src.split('/').pop();
     metaInfo.textContent     = item.info  || '';
     const tags = (item.tags || '').split(',').filter(Boolean);
     tagRow.innerHTML = tags.map(t => `<span class="tag">${t.trim()}</span>`).join('');
@@ -102,13 +108,11 @@
   function buildThumb(item, index) {
     const div = document.createElement('div');
     div.className     = 'media-thumb';
-    div.style.display = 'none'; // hide until filtered
-    div.dataset.type  = item.type;
-    div.dataset.src   = item.src;
-    div.dataset.label = item.label || item.src.split('/').pop();
-    div.dataset.info  = item.info  || '';
-    div.dataset.tags  = item.tags  || '';
-    div.dataset.tab   = item.tab   || 'all';
+    div.style.display = 'none'; // hidden until the matching tab is active
+    div.dataset.index = index;  // points back into mediaItems
+    div.dataset.tab    = item.tab || 'all';
+
+    const label = item.label || item.src.split('/').pop();
 
     const badge = document.createElement('span');
     badge.className   = 'thumb-type';
@@ -118,7 +122,7 @@
     if (item.thumbnail) {
       const img = document.createElement('img');
       img.src = item.thumbnail;
-      img.alt = div.dataset.label;
+      img.alt = label;
       div.appendChild(img);
     }
 
@@ -126,7 +130,7 @@
     inner.className = 'thumb-inner';
     inner.innerHTML = `
       <span class="thumb-ascii">${item.type === 'vid' ? '&#x25B6;' : '&#x25A0;'}</span>
-      <span class="thumb-label">${div.dataset.label}</span>
+      <span class="thumb-label">${label}</span>
     `;
     div.appendChild(inner);
 
@@ -135,34 +139,32 @@
 
   /* ── BUILD TABS FROM JSON DATA ── */
   function buildTabs(items) {
-  const seen = [];
-  items.forEach(item => {
-    const tab = item.tab;
-    if (tab && !seen.includes(tab)) seen.push(tab);
-  });
+    const seen = [];
+    items.forEach(item => {
+      const tab = item.tab;
+      if (tab && !seen.includes(tab)) seen.push(tab);
+    });
 
-  filterNav.innerHTML = '';
-  seen.forEach((tabName, i) => {
-    const li = document.createElement('li');
-    li.textContent = tabName;
-    li.dataset.tab = tabName;
-    if (i === 0) li.classList.add('active');
-    filterNav.appendChild(li);
-  });
-}
+    filterNav.innerHTML = '';
+    seen.forEach((tabName, i) => {
+      const li = document.createElement('li');
+      li.textContent = tabName;
+      li.dataset.tab = tabName;
+      if (i === 0) li.classList.add('active');
+      filterNav.appendChild(li);
+    });
+
+    return seen;
+  }
 
   /* ── FILTER GRID BY TAB ── */
-function filterByTab(tabName) {
-  // hide player and photo when switching tabs
-  document.getElementById('playerArea').style.display = 'none';
-  document.getElementById('photoDisplay').style.display = 'none';
-
-  document.querySelectorAll('.media-thumb').forEach(thumb => {
-    const match = thumb.dataset.tab === tabName;
-    thumb.style.display = match ? '' : 'none';
-    thumb.classList.remove('active');
-  });
-}
+  function filterByTab(tabName) {
+    document.querySelectorAll('.media-thumb').forEach(thumb => {
+      const match = thumb.dataset.tab === tabName;
+      thumb.style.display = match ? '' : 'none';
+      thumb.classList.remove('active');
+    });
+  }
 
   /* ── LOAD MEDIA FROM JSON ── */
   fetch('media.json')
@@ -178,16 +180,16 @@ function filterByTab(tabName) {
         return;
       }
 
-      // Build tabs from data
-      buildTabs(data.items);
+      mediaItems = data.items;
 
-      // Build thumbnails
-      data.items.forEach((item, index) => {
+      const tabs = buildTabs(mediaItems);
+
+      mediaItems.forEach((item, index) => {
         const thumb = buildThumb(item, index);
         grid.appendChild(thumb);
       });
 
-    
+      if (tabs.length) filterByTab(tabs[0]);
     })
     .catch(err => {
       console.error('Could not load media.json:', err);
@@ -195,40 +197,64 @@ function filterByTab(tabName) {
     });
 
   /* ── SWITCH TO VIDEO ── */
-function loadVideo(thumb) {
-  isPhotoMode = false;
-  document.getElementById('playerArea').style.display = '';    // show player
-  document.getElementById('photoDisplay').style.display = 'none'; // hide photo
-  plyr.pause();
-  plyr.source = {
-    type: 'video',
-    sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
-  };
-  plyr.once('loadedmetadata', () => updateProgress());
-  setMeta(thumb.dataset);
-  updatePlayBtn();
-}
+  function loadVideo(item) {
+    isPhotoMode = false;
+    playerArea.style.display   = '';
+    photoDisplay.style.display = 'none';
+    plyr.pause();
+    plyr.source = {
+      type: 'video',
+      sources: [{ src: item.src, type: 'video/mp4' }],
+    };
+    plyr.once('loadedmetadata', () => updateProgress());
+    setMeta(item);
+    updatePlayBtn();
+  }
 
   /* ── SWITCH TO PHOTO ── */
-  function loadPhoto(thumb) {
-  isPhotoMode = true;
-  plyr.pause();
-  document.getElementById('playerArea').style.display = 'none'; // hide player
-  document.getElementById('photoDisplay').style.display = '';   // show photo
-  photoImg.src = thumb.dataset.src;
-  photoImg.alt = thumb.dataset.label || '';
-  setMeta(thumb.dataset);
-}
+  function loadPhoto(item) {
+    isPhotoMode = true;
+    plyr.pause();
+    playerArea.style.display   = 'none';
+    photoDisplay.style.display = '';
+    photoImg.src = item.src;
+    photoImg.alt = item.label || '';
+    setMeta(item);
+  }
+
+  /* ── LOAD WHICHEVER ITEM IS CURRENT ── */
+  function loadItem(item) {
+    if (!item) return;
+    item.type === 'vid' ? loadVideo(item) : loadPhoto(item);
+  }
+
+  /* ── MODAL OPEN / CLOSE ── */
+  function openModal(item) {
+    // prev/next walks the items within this item's own tab
+    currentList  = mediaItems.filter(m => m.tab === item.tab);
+    currentIndex = currentList.indexOf(item);
+    modal.classList.add('open');
+    loadItem(item);
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    plyr.pause();
+  }
+
+  function showRelative(offset) {
+    if (currentList.length === 0) return;
+    currentIndex = (currentIndex + offset + currentList.length) % currentList.length;
+    loadItem(currentList[currentIndex]);
+  }
 
   /* ── THUMBNAIL CLICK ── */
   grid.addEventListener('click', function (e) {
     const thumb = e.target.closest('.media-thumb');
     if (!thumb) return;
-
-    document.querySelectorAll('.media-thumb').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-
-    thumb.dataset.type === 'vid' ? loadVideo(thumb) : loadPhoto(thumb);
+    const item = mediaItems[Number(thumb.dataset.index)];
+    if (!item) return;
+    openModal(item);
   });
 
   /* ── TAB CLICK ── */
@@ -242,7 +268,24 @@ function loadVideo(thumb) {
     filterByTab(li.dataset.tab);
   });
 
-  /* ── CONTROLS ── */
+  /* ── MODAL CONTROLS ── */
+  modalClose.addEventListener('click', closeModal);
+  modalPrev.addEventListener('click', () => showRelative(-1));
+  modalNext.addEventListener('click', () => showRelative(1));
+
+  // click on the dark backdrop (not the content) closes it
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeModal();
+    if (e.key === 'ArrowLeft')  showRelative(-1);
+    if (e.key === 'ArrowRight') showRelative(1);
+  });
+
+  /* ── PLAYER CONTROLS ── */
   btnPlay.addEventListener('click', function () {
     if (isPhotoMode) return;
     plyr.togglePlay();
@@ -294,49 +337,6 @@ function loadVideo(thumb) {
     muted  = plyr.muted;
     updateVol();
   });
-
-// Open the Modal
-function openModal() {
-  document.getElementById("myModal").style.display = "block";
-}
-
-// Close the Modal
-function closeModal() {
-  document.getElementById("myModal").style.display = "none";
-}
-
-var slideIndex = 1;
-showSlides(slideIndex);
-
-// Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-// Thumbnail image controls
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("demo");
-  var captionText = document.getElementById("caption");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
-  captionText.innerHTML = dots[slideIndex-1].alt;
-}
-
-
 
   /* ── INIT ── */
   updateVol();

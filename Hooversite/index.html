@@ -12,8 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
- 
-  
+
 </head>
 <body>
 <div class="shell">
@@ -26,141 +25,84 @@
     <div class="site-status">status: <span>online</span></div>
   </header>
 
-
-
   <!-- GALLERY -->
-<div class="section-label"></div>
-<div class="media-grid" id="mediaGrid">
-  <!-- thumbnails are loaded automatically from media.json -->
-</div>
-
-  <!-- PLAYER -->
-  <div class="section-label"></div>
-  <div class="player-area" id="playerArea">
-
-   <!-- Video player (shown for video items) -->
-<div class="player-screen" id="playerScreen">
-  <div class="scanline"></div>
-  <video id="player" playsinline>
-  </video>
-</div>
-
-  <div>
-      <img src="Hooversite/pictures/IMG_2004.jpg">
-    </div>
-
-    <!-- Custom control bar -->
-    <div class="player-bar" id="playerBar">
-      <div class="bar-top">
-        <div class="bar-seg">
-          <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
-          <button class="ctrl-btn play-btn" id="btnPlay" aria-label="Play">&#x25B6;</button>
-          <button class="ctrl-btn" id="btnFwd"   aria-label="Skip forward">&#x25BA;&#x25BA;</button>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <span class="time-display" id="timeDisplay">00:00 / 00:00<span class="blink">_</span></span>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <span class="vol-display" id="volDisplay"
-                title="Click to toggle mute"
-                style="cursor:pointer">VOL:100</span>
-        </div>
-        <span class="bar-div">|</span>
-        <div class="bar-seg">
-          <button class="ctrl-btn" id="btnFs" aria-label="Fullscreen">&#x25A1;</button>
-        </div>
-        <span class="rec-indicator"><span class="blink">&#x25A0;</span> REC</span>
-      </div>
-      <div class="bar-bottom">
-        <span class="prog-label">00:00</span>
-        <div class="progress-track" id="progressTrack">
-          <div class="prog-blocks" id="progBlocks"></div>
-          <div class="prog-ticks" id="progTicks"></div>
-        </div>
-        <span class="prog-label" id="progEnd">00:00</span>
-      </div>
-    </div>
-
-  </div><!-- /player-area -->
-
-    <!-- PHOTO VIEW (replaces player when image is selected) -->
-  <div id="photoDisplay" style="display:none; margin-bottom:1.5rem;">
-  <img id="photoImg" src="" alt="" />
-</div>
-
-  <!-- META -->
-  <div class="meta-bar">
-    <span class="meta-filename" id="metaFilename"></span>
-    <span class="meta-info"     id="metaInfo"></span>
-  </div>
-  <div class="tag-row" id="tagRow">
-    <!-- tags are loaded automatically from media.json -->
+  <div class="section-label">browse</div>
+  <div class="media-grid" id="mediaGrid">
+    <!-- thumbnails are loaded automatically from media.json -->
   </div>
 
 </div><!-- /shell -->
 
-<!-- Plyr -->
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script src="js/player.js"></script>
-
-<!-- The Modal/Lightbox -->
+<!-- MODAL / LIGHTBOX -->
 <div id="myModal" class="modal">
-  <span class="close cursor" onclick="closeModal()">&times;</span>
-  <div class="modal-content">
+  <div class="modal-inner">
 
-    <div class="mySlides">
-      <div class="numbertext">1 / 4</div>
-      <img src="pictures/IMG_2004.jpg" style="width:100%">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <button class="modal-nav modal-prev" id="modalPrev" aria-label="Previous item">&#10094;</button>
+    <button class="modal-nav modal-next" id="modalNext" aria-label="Next item">&#10095;</button>
+
+    <!-- Video player (shown for video items) -->
+    <div class="player-area" id="playerArea">
+      <div class="player-screen" id="playerScreen">
+        <div class="scanline"></div>
+        <video id="player" playsinline></video>
+      </div>
+
+      <!-- Custom control bar -->
+      <div class="player-bar" id="playerBar">
+        <div class="bar-top">
+          <div class="bar-seg">
+            <button class="ctrl-btn" id="btnRew"   aria-label="Rewind">&#x25C4;&#x25C4;</button>
+            <button class="ctrl-btn play-btn" id="btnPlay" aria-label="Play">&#x25B6;</button>
+            <button class="ctrl-btn" id="btnFwd"   aria-label="Skip forward">&#x25BA;&#x25BA;</button>
+          </div>
+          <span class="bar-div">|</span>
+          <div class="bar-seg">
+            <span class="time-display" id="timeDisplay">00:00 / 00:00<span class="blink">_</span></span>
+          </div>
+          <span class="bar-div">|</span>
+          <div class="bar-seg">
+            <span class="vol-display" id="volDisplay"
+                  title="Click to toggle mute"
+                  style="cursor:pointer">VOL:100</span>
+          </div>
+          <span class="bar-div">|</span>
+          <div class="bar-seg">
+            <button class="ctrl-btn" id="btnFs" aria-label="Fullscreen">&#x25A1;</button>
+          </div>
+          <span class="rec-indicator"><span class="blink">&#x25A0;</span> REC</span>
+        </div>
+        <div class="bar-bottom">
+          <span class="prog-label">00:00</span>
+          <div class="progress-track" id="progressTrack">
+            <div class="prog-blocks" id="progBlocks"></div>
+            <div class="prog-ticks" id="progTicks"></div>
+          </div>
+          <span class="prog-label" id="progEnd">00:00</span>
+        </div>
+      </div>
+    </div><!-- /player-area -->
+
+    <!-- PHOTO VIEW (replaces player when image is selected) -->
+    <div id="photoDisplay" style="display:none;">
+      <img id="photoImg" src="" alt="" />
     </div>
 
-    <div class="mySlides">
-      <div class="numbertext">2 / 4</div>
-      <img src="img2_wide.jpg" style="width:100%">
+    <!-- META -->
+    <div class="meta-bar">
+      <span class="meta-filename" id="metaFilename"></span>
+      <span class="meta-info"     id="metaInfo"></span>
+    </div>
+    <div class="tag-row" id="tagRow">
+      <!-- tags are loaded automatically from media.json -->
     </div>
 
-    <div class="mySlides">
-      <div class="numbertext">3 / 4</div>
-      <img src="img3_wide.jpg" style="width:100%">
-    </div>
+  </div><!-- /modal-inner -->
+</div><!-- /modal -->
 
-    <div class="mySlides">
-      <div class="numbertext">4 / 4</div>
-      <img src="img4_wide.jpg" style="width:100%">
-    </div>
-
-    <!-- Next/previous controls -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-    <!-- Caption text -->
-    <div class="caption-container">
-      <p id="caption"></p>
-    </div>
-
-    <!-- Thumbnail image controls -->
-    <div class="column">
-      <img class="demo" src="pictures/IMG_2004.jpg" onclick="currentSlide(1)" alt="Nature">
-    </div>
-
-    <div class="column">
-      <img class="demo" src="img2.jpg" onclick="currentSlide(2)" alt="Snow">
-    </div>
-
-    <div class="column">
-      <img class="demo" src="img3.jpg" onclick="currentSlide(3)" alt="Mountains">
-    </div>
-
-    <div class="column">
-      <img class="demo" src="img4.jpg" onclick="currentSlide(4)" alt="Lights">
-    </div>
-  </div>
-</div>
-
-
+<!-- Plyr -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="js/player.js"></script>
 
 </body>
 </html>
-
-
