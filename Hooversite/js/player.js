@@ -5,6 +5,7 @@
   const BLOCKS     = 28;
   const SKIP_SEC   = 10;
   const TICK_COUNT = 5;
+  document.getElementById('playerArea').style.display = 'none';
 
   /* ── ELEMENTS ── */
   const grid          = document.getElementById('mediaGrid');
@@ -49,7 +50,7 @@
   let isPhotoMode = false;
   let volume      = 1.0;
   let muted       = false;
-  document.getElementById('playerArea').style.display = 'none';
+  
 
   /* ── HELPERS ── */
   function fmt(sec) {
@@ -96,8 +97,6 @@
     const tags = (item.tags || '').split(',').filter(Boolean);
     tagRow.innerHTML = tags.map(t => `<span class="tag">${t.trim()}</span>`).join('');
   }
-
-  
 
   /* ── BUILD THUMBNAIL ELEMENT ── */
   function buildThumb(item, index) {
@@ -283,56 +282,6 @@ function loadVideo(thumb) {
     const pct  = (e.clientX - rect.left) / rect.width;
     plyr.currentTime = Math.max(0, Math.min(plyr.duration, pct * plyr.duration));
   });
-
-
-  /* ── LIGHTBOX EVENTS ── */
-
-function openLightbox() {
-  document.getElementById('lightbox').style.display = 'flex';
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').style.display = 'none';
-  document.getElementById('lightboxPlayer').style.display = 'none';
-  document.getElementById('lightboxPhoto').style.display = 'none';
-  plyr.pause();
-}
-
-function loadVideo(thumb) {
-  isPhotoMode = false;
-  document.getElementById('lightboxPlayer').style.display = '';
-  document.getElementById('lightboxPhoto').style.display = 'none';
-  plyr.source = {
-    type: 'video',
-    sources: [{ src: thumb.dataset.src, type: 'video/mp4' }],
-  };
-  plyr.once('loadedmetadata', () => updateProgress());
-  setMeta(thumb.dataset);
-  updatePlayBtn();
-  openLightbox();
-}
-
-function loadPhoto(thumb) {
-  isPhotoMode = true;
-  plyr.pause();
-  document.getElementById('lightboxPlayer').style.display = 'none';
-  document.getElementById('lightboxPhoto').style.display = '';
-  document.getElementById('photoImg').src = thumb.dataset.src;
-  document.getElementById('photoImg').alt = thumb.dataset.label || '';
-  setMeta(thumb.dataset);
-  openLightbox();
-}
-
-// Close on backdrop click or X button
-document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
-document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeLightbox();
-});
-
-
 
   /* ── PLYR EVENTS ── */
   plyr.on('timeupdate',     updateProgress);
