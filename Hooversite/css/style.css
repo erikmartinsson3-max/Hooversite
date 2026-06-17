@@ -371,12 +371,13 @@
     .modal-inner {
       position: relative;
       width: 100%;
+      height: 90%;
       max-width: 860px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
       outline-offset: -5px;
-      top: 10rem 0px;
+    
 
       
     }
