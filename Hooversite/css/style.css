@@ -13,7 +13,7 @@
       --bar-bg:        #111111;
       --rec:           #cc3333;
       --mono:          'Courier New', monospace;
-      --stage-h:       360px; /* fixed height for the opened media — same for photo and video */
+      --stage-h:       420px; /* fixed height for the opened media — same for photo and video */
     }
 
     body {
@@ -357,12 +357,15 @@
     .modal {
       display: none;
       position: fixed;
-      inset: 0;
+      top: 24px;
+      bottom: 24px;
+      left: 0;
+      right: 0;
       z-index: 100;
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding: 15rem 15rem;
+      padding: 3rem 1rem;
     }
     .modal.open { display: flex; }
 

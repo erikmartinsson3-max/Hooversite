@@ -95,7 +95,7 @@
   function updateVol() {
     const pct = muted ? 0 : Math.round(volume * 100);
     //volDisplay.textContent = 'VOL:' + String(pct).padStart(3, '0');
-    if (muted) volDisplay.style.display = 'none';
+    volDisplay.textContent = muted ? 'MUTED' : 'SOUND';
   }
 
   function setMeta(item) {
