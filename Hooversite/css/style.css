@@ -355,31 +355,36 @@
 
     /* ── MODAL / LIGHTBOX ── */
 .modal {
-  display: none;
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  padding: 2rem;
   background: rgba(0,0,0,.92);
+
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  align-items: center;
 }
 
 .modal.open {
   display: flex;
 }
-
 .modal-inner {
   position: relative;
-  max-width: 860px;
+
   width: 100%;
+  max-width: 860px;
+
+  max-height: calc(100vh - 4rem);
+
+  overflow-y: auto;
+
+  padding: 1.5rem;
+
   background: var(--bg);
   border: 1px solid var(--border-strong);
   outline: 3px solid var(--bg);
   outline-offset: -5px;
 }
-
     .modal-close {
       position: absolute;
       top: -38px;
