@@ -369,17 +369,13 @@
     .modal.open { display: flex;}
 
     .modal-inner {
-      position: relative;
-      width: 90%;
-      height: 80%;
+      position: fixed;
       max-width: 860px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
       outline-offset: -5px;
-    
-
-      
+  
     }
 
     .modal-close {
