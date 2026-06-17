@@ -365,8 +365,6 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding-top: 300px;
-      padding-bottom: 300px;
     }
     .modal.open { display: flex;}
 
