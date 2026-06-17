@@ -367,7 +367,9 @@
       justify-content: center;
       padding: 3rem 1rem;
     }
-    .modal.open { display: flex; }
+    .modal.open { display: flex;
+          top: 24px;
+      bottom: 24px; }
 
     .modal-inner {
       position: relative;
