@@ -6,7 +6,8 @@
       "label": "goarer.mov",
       "info": "1280×720 · h.264 · 30fps",
       "tags": "goar,2024",
-      "tab" : "misc film"
+      "tab" : "misc film",
+      "thumbnail":"thumbnails/goarer.jpg"
     },
     {
       "type": "vid",
@@ -14,7 +15,8 @@
       "label": "MOV00539-converted.mp4",
       "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
-      "tab" : "misc film"
+      "tab" : "misc film",
+      "thumbnail":"thumbnails/MOV00539-converted.jpg"
     },
     {
       "type": "vid",
@@ -22,7 +24,8 @@
       "label": "MOV00619-converted.mp4",
       "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
-      "tab" : "misc film"
+      "tab" : "misc film",
+      "thumbnail":"thumbnails/MOV00619-converted.jpg"
     },
     {
       "type": "vid",
@@ -30,7 +33,8 @@
       "label": "MOV00622-converted.mp4",
       "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
-      "tab" : "misc film"
+      "tab" : "misc film",
+      "thumbnail":"thumbnails/MOV00627-converted.jpg"
     },
     {
       "type": "vid",
@@ -38,7 +42,8 @@
       "label": "MOV00627-converted.mp4",
       "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
-      "tab" : "misc film"
+      "tab" : "misc film",
+      "thumbnail":"thumbnails/MOV00627-converted.jpg"
     },
     {
       "type": "vid",
@@ -46,7 +51,8 @@
       "label": "LIFELOVER CANCERTID VISUALIZER (1).mov",
       "info": "1080×1920 · mov",
       "tags": "lifelover,2025",
-      "tab" : "2025 arkitektur"
+      "tab" : "2025 arkitektur",
+      "thumbnail":"thumbnails/LIFELOVER CANCERTID VISUALIZER (1).jpg"
     },
     {
       "type": "img",
