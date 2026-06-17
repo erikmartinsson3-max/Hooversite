@@ -356,8 +356,7 @@
     /* ── MODAL / LIGHTBOX ── */
     .modal {
       display: none;
-      position: fixed;
-      height: 99%;
+      position: flex;
       top: 24px;
       bottom: 24px;
       left: 0;
@@ -380,7 +379,7 @@
       outline: 3px solid var(--bg);
       outline-offset: -5px;
       padding: 1.5rem;
-
+      
     }
 
     .modal-close {
