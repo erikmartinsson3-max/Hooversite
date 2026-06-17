@@ -369,7 +369,7 @@
     .modal.open { display: flex;}
 
     .modal-inner {
-      position: fixed;
+      position: relative;
       align-items: center;
       justify-content: center;
       max-width: 860px;
