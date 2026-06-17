@@ -357,7 +357,8 @@
     .modal {
       display: none;
       position: fixed;
-      inset: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       background: rgba(0,0,0,0.92);
       align-items: center;
@@ -369,13 +370,14 @@
 
     .modal-inner {
       position: relative;
-      align-items: center;
-      justify-content: center;
+      max-width: 860px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
       outline-offset: -5px;
-  
+    
+
+      
     }
 
     .modal-close {
