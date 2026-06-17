@@ -362,7 +362,7 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding: 2rem 2rem;
+      padding: 15rem 15rem;
     }
     .modal.open { display: flex; }
 
