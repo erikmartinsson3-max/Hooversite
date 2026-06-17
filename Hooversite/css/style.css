@@ -354,31 +354,30 @@
     }
 
     /* ── MODAL / LIGHTBOX ── */
-    .modal {
-      display: none;
-      position: fixed;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(0,0,0,0.92);
-      align-items: center;
-      justify-content: center;
-    
-   
-    }
-    .modal.open { display: flex;}
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.92);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
 
-    .modal-inner {
-      position: fixed;
-      align-items: center;
-      justify-content: center;
-      max-width: 860px;
-      background: var(--bg);
-      border: 1px solid var(--border-strong);
-      outline: 3px solid var(--bg);
-      outline-offset: -5px;
-  
-    }
+.modal.open {
+  display: flex;
+}
+
+.modal-inner {
+  position: relative;
+  max-width: 860px;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  outline: 3px solid var(--bg);
+  outline-offset: -5px;
+}
 
     .modal-close {
       position: absolute;
