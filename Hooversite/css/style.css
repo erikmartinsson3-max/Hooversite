@@ -380,7 +380,8 @@
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
       outline-offset: -5px;
-      padding: 1.5rem;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
     }
 
     .modal-close {
