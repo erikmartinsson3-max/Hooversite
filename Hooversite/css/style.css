@@ -372,7 +372,6 @@
       position: relative;
       align-items: center;
       justify-content: center;
-      max-width: 860px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
