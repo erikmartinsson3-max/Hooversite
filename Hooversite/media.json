@@ -9,11 +9,51 @@
       "tab" : "misc film"
     },
     {
+      "type": "vid",
+      "src": "videos/MOV00539.MPG",
+      "label": "MOV00539.MPG",
+      "info": "640×480 · mpg",
+      "tags": "roadtrip,2025",
+      "tab" : "misc film"
+    },
+    {
+      "type": "vid",
+      "src": "videos/MOV00619.MPG",
+      "label": "MOV00619.MPG",
+      "info": "640×480 · mpg",
+      "tags": "roadtrip,2025",
+      "tab" : "misc film"
+    },
+    {
+      "type": "vid",
+      "src": "videos/MOV00622.MPG",
+      "label": "MOV00622.MPG",
+      "info": "640×480 · mpg",
+      "tags": "roadtrip,2025",
+      "tab" : "misc film"
+    },
+    {
+      "type": "vid",
+      "src": "videos/MOV00627.MPG",
+      "label": "MOV00627.MPG",
+      "info": "640×480 · mpg",
+      "tags": "roadtrip,2025",
+      "tab" : "misc film"
+    },
+    {
+      "type": "vid",
+      "src": "videos/LIFELOVER CANCERTID VISUALIZER (1).mov",
+      "label": "LIFELOVER CANCERTID VISUALIZER (1).mov",
+      "info": "1080×1920 · mov",
+      "tags": "lifelover,2025",
+      "tab" : "2025 arkitektur"
+    },
+    {
       "type": "img",
       "src": "pictures/IMG_2004.jpg",
       "label": "IMG_2004.jpg",
       "info": "3000×3000 · jpg",
-      "tags": "fistfight,2025",
+      "tags": "inre röster,2025",
       "thumbnail": "pictures/IMG_2004.jpg",
       "tab" : "2025 arkitektur"
     }
