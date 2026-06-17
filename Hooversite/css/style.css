@@ -419,11 +419,11 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 560px) {
       .media-grid { grid-template-columns: repeat(2, 1fr); }
-     .site-header { flex-wrap: wrap; }
-.site-logo   { order: 1; }
-.site-status { order: 2; }
+      .site-header { flex-wrap: wrap; }
+      .site-logo   { order: 1; }
+      .site-status { order: 2; }
 
-.site-nav {
+      .site-nav {
   order: 3;
   width: 100%;
   margin-top: 0.75rem;
@@ -433,8 +433,8 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-}
-.site-nav li { flex-shrink: 0; }
+       }
+      .site-nav li { flex-shrink: 0; }
       .bar-top { gap: 4px; }
       .bar-div { margin: 0 5px; }
       
