@@ -365,7 +365,10 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding: 3rem 10rem 10rem; /* more space at top for close btn */
+      padding-top: 10rem;
+      padding-bottom: 10rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
     .modal.open { display: flex; }
 
