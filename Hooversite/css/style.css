@@ -370,6 +370,8 @@
 
     .modal-inner {
       position: fixed;
+      align-items: center;
+      justify-content: center;
       max-width: 860px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
