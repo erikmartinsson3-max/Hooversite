@@ -369,7 +369,7 @@
 
     .modal-inner {
       position: relative;
-      max-width: 1040px;
+      max-width: 1600px;
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
