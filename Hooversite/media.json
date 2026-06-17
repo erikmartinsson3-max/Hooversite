@@ -10,33 +10,33 @@
     },
     {
       "type": "vid",
-      "src": "videos1/MOV00539.MPG",
-      "label": "MOV00539.MPG",
-      "info": "640×480 · mpg",
+      "src": "videos1/MOV00539-converted.mp4",
+      "label": "MOV00539-converted.mp4",
+      "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
       "tab" : "misc film"
     },
     {
       "type": "vid",
-      "src": "videos1/MOV00619.MPG",
-      "label": "MOV00619.MPG",
-      "info": "640×480 · mpg",
+      "src": "videos1/MOV00619-converted.mp4",
+      "label": "MOV00619-converted.mp4",
+      "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
       "tab" : "misc film"
     },
     {
       "type": "vid",
-      "src": "videos1/MOV00622.MPG",
-      "label": "MOV00622.MPG",
-      "info": "640×480 · mpg",
+      "src": "videos1/MOV00622-converted.mp4",
+      "label": "MOV00622-converted.mp4",
+      "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
       "tab" : "misc film"
     },
     {
       "type": "vid",
-      "src": "videos1/MOV00627.MPG",
-      "label": "MOV00627.MPG",
-      "info": "640×480 · mpg",
+      "src": "videos1/MOV00627-converted.mp4",
+      "label": "MOV00627-converted.mp4",
+      "info": "640×480 · mp4",
       "tags": "roadtrip,2025",
       "tab" : "misc film"
     },
