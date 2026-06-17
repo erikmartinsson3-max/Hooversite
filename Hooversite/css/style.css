@@ -356,9 +356,9 @@
     /* ── MODAL / LIGHTBOX ── */
     .modal {
       display: none;
-      position: absolute;
-      top: 24px;
-      bottom: 24px;
+      position: fixed;
+      top: 500px;
+      bottom: 500px;
       left: 0;
       right: 0;
       z-index: 100;
