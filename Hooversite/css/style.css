@@ -37,7 +37,7 @@
       outline-offset: -5px;
       padding: 1.5rem;
     }
-    
+
     /* ── HEADER ── */
     .site-header {
       display: flex;
@@ -365,10 +365,7 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding-top: 10rem;
-      padding-bottom: 10rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding: 3rem 1rem;
     }
     .modal.open { display: flex; }
 
@@ -380,6 +377,7 @@
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
       outline-offset: -5px;
+      padding: 1.5rem;
     }
 
     .modal-close {
