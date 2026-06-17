@@ -10,7 +10,7 @@
     },
     {
       "type": "vid",
-      "src": "videos/MOV00539.MPG",
+      "src": "videos1/MOV00539.MPG",
       "label": "MOV00539.MPG",
       "info": "640×480 · mpg",
       "tags": "roadtrip,2025",
@@ -18,7 +18,7 @@
     },
     {
       "type": "vid",
-      "src": "videos/MOV00619.MPG",
+      "src": "videos1/MOV00619.MPG",
       "label": "MOV00619.MPG",
       "info": "640×480 · mpg",
       "tags": "roadtrip,2025",
@@ -26,7 +26,7 @@
     },
     {
       "type": "vid",
-      "src": "videos/MOV00622.MPG",
+      "src": "videos1/MOV00622.MPG",
       "label": "MOV00622.MPG",
       "info": "640×480 · mpg",
       "tags": "roadtrip,2025",
@@ -34,7 +34,7 @@
     },
     {
       "type": "vid",
-      "src": "videos/MOV00627.MPG",
+      "src": "videos1/MOV00627.MPG",
       "label": "MOV00627.MPG",
       "info": "640×480 · mpg",
       "tags": "roadtrip,2025",
@@ -42,7 +42,7 @@
     },
     {
       "type": "vid",
-      "src": "videos/LIFELOVER CANCERTID VISUALIZER (1).mov",
+      "src": "videos1/LIFELOVER CANCERTID VISUALIZER (1).mov",
       "label": "LIFELOVER CANCERTID VISUALIZER (1).mov",
       "info": "1080×1920 · mov",
       "tags": "lifelover,2025",

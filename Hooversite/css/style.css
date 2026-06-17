@@ -362,7 +362,7 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1rem;
     }
     .modal.open { display: flex; }
 
@@ -370,6 +370,8 @@
       position: relative;
       width: 100%;
       max-width: 860px;
+      max-height: calc(100vh - 6rem); /* never exceeds the modal's own padded area */
+      overflow: hidden; /* safety clip, not a scrollbar — shouldn't trigger at normal sizes */
       background: var(--bg);
       border: 1px solid var(--border-strong);
       outline: 3px solid var(--bg);
