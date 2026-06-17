@@ -357,8 +357,8 @@
     .modal {
       display: none;
       position: fixed;
-      top: 100px;
-      bottom: 100px;
+      top: 200px;
+      bottom: 200px;
       left: 0;
       right: 0;
       z-index: 100;
