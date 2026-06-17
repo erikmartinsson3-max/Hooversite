@@ -365,11 +365,10 @@
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding: 3rem 1rem;
+      padding-top: 30px;
+      padding-bottom: 30px;
     }
-    .modal.open { display: flex;
-          top: 24px;
-      bottom: 24px; }
+    .modal.open { display: flex;}
 
     .modal-inner {
       position: relative;
