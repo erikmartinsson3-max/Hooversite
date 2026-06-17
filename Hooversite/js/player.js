@@ -88,7 +88,7 @@
   }
 
   function updatePlayBtn() {
-    btnPlay.innerHTML = plyr.playing ? '⏸' : '&#x25B6;';
+    btnPlay.innerHTML = plyr.playing ? 'X' : '&#x25B6;';
     btnPlay.setAttribute('aria-label', plyr.playing ? 'Pause' : 'Play');
   }
 
