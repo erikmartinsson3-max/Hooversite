@@ -357,15 +357,15 @@
     .modal {
       display: none;
       position: fixed;
-      top: 24px;
-      bottom: 24px;
+      top: 10%;
+      bottom: 10%;
       left: 0;
       right: 0;
       z-index: 100;
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-     padding: 10% 0;
+   
     }
     .modal.open { display: flex;}
 
