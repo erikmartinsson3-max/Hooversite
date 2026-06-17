@@ -419,14 +419,11 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 560px) {
       .media-grid { grid-template-columns: repeat(2, 1fr); }
-      .site-nav { display: none; }
-      .bar-top { gap: 4px; }
-      .bar-div { margin: 0 5px; }
-       .site-header { flex-wrap: wrap; }
-      .site-logo   { order: 1; }
-      .site-status { order: 2; }
+     .site-header { flex-wrap: wrap; }
+.site-logo   { order: 1; }
+.site-status { order: 2; }
 
-      .site-nav {
+.site-nav {
   order: 3;
   width: 100%;
   margin-top: 0.75rem;
@@ -437,11 +434,14 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
 }
-      .site-nav li { flex-shrink: 0; }
-    }
+.site-nav li { flex-shrink: 0; }
+      .bar-top { gap: 4px; }
+      .bar-div { margin: 0 5px; }
+      
       .modal { padding: 0.75rem; }
       .modal-inner { padding: 1rem; --stage-h: clamp(140px, 42vh, 220px); }
       .modal-close { top: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.6); }
       .modal-prev { left: 0.35rem; }
       .modal-next { right: 0.35rem; }
-     
+      
+    }
