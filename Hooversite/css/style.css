@@ -13,7 +13,7 @@
       --bar-bg:        #111111;
       --rec:           #cc3333;
       --mono:          'Courier New', monospace;
-      --stage-h:      clamp(200px, 48vh, 420px); /* shrinks on short screens so everything fits */
+      --stage-h:      clamp(160px, 48vh, 600px); /* shrinks on short screens so everything fits */
     }
 
     body {
