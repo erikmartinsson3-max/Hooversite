@@ -357,16 +357,16 @@
     .modal {
       display: none;
       position: fixed;
-      top: 300px;
-      bottom: 300px;
+      top: 24px;
+      bottom: 24px;
       left: 0;
       right: 0;
       z-index: 100;
       background: rgba(0,0,0,0.92);
       align-items: center;
       justify-content: center;
-      padding-top: 30px;
-      padding-bottom: 30px;
+      padding-top: 300px;
+      padding-bottom: 300px;
     }
     .modal.open { display: flex;}
 
