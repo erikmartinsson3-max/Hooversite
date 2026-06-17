@@ -362,7 +362,7 @@
   background: rgba(0,0,0,0.92);
   align-items: center;
   justify-content: center;
-  padding: 3rem 0rem 1.5rem; /* extra top room for the close button sitting above modal-inner */
+  padding: 3rem 1rem 1.5rem; /* extra top room for the close button sitting above modal-inner */
   overflow-y: auto;          /* scrolls as a last resort if content still can't fit */
 }
 .modal.open { display: flex; }
@@ -371,12 +371,9 @@
       position: relative;
       max-width: 860px;
       background: var(--bg);
-      border: 1px solid var(--border-strong);
-      outline: 3px solid var(--bg);
-      outline-offset: -5px;
-    
+      border: 1px solid var(--border-strong);  
 
-      
+        
     }
 
     .modal-close {
