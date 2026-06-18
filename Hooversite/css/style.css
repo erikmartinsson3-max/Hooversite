@@ -59,7 +59,7 @@
       list-style: none;
     }
     .site-nav li {
-      font-size: 11px;
+      font-size: 200px;
       letter-spacing: 2px;
       color: var(--muted);
       cursor: pointer;
