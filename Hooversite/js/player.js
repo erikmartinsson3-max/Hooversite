@@ -190,7 +190,7 @@
         grid.appendChild(thumb);
       });
 
-      if (tabs.length) filterByTab(tabs[0]);
+   
     })
     .catch(err => {
       console.error('Could not load media.json:', err);
