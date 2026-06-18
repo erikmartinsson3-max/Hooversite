@@ -151,7 +151,6 @@
       const li = document.createElement('li');
       li.textContent = tabName;
       li.dataset.tab = tabName;
-      if (i === 0) li.classList.add('active');
       filterNav.appendChild(li);
     });
 
