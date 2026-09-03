@@ -8,7 +8,7 @@
       "info": "640×480 · ritning",
       "tags": "ritning,2025",
       "tab" : "Ritningar",
-      "thumbnail":"ritning1"
+      "thumbnail":"videos1/images_(1).jfif"
     },
     {
       "type": "img",
@@ -17,7 +17,7 @@
       "info": "640×480 · ritning",
       "tags": "ritning,2025",
       "tab" : "Ritningar",
-      "thumbnail":"ritning2"
+      "thumbnail":"videos1/images_(2).jfif"
     },
     {
       "type": "img",
@@ -26,7 +26,7 @@
       "info": "640×480 · ritning",
       "tags": "ritning,2025",
       "tab" : "Ritningar",
-      "thumbnail":"ritning3"
+      "thumbnail":"videos1/images.jfif"
     },
     {
       "type": "img",
@@ -43,7 +43,7 @@
       "label": "Från Kollage.png",
       "info":  "png",
       "tags": "kreativt skapande,2025",
-      "thumbnail": "kreativt skapande",
+      "thumbnail": "pictures/JESI_KOLLAGE_IDRIS.png",
       "tab" : "misc"
     }
   ]
