@@ -3,21 +3,21 @@
 
     {
       "type": "img",
-      "src": "videos1/images_(1).jfif",
+      "src": "videos1/images(1).jfif",
       "label": "ritning1",
       "info": "640×480 · ritning",
       "tags": "ritning,2025",
       "tab" : "Ritningar",
-      "thumbnail":"videos1/images_(1).jfif"
+      "thumbnail":"videos1/images(1).jfif"
     },
     {
       "type": "img",
-      "src": "videos1/images_(2).jfif",
+      "src": "videos1/images(2).jfif",
       "label": "ritning2",
       "info": "640×480 · ritning",
       "tags": "ritning,2025",
       "tab" : "Ritningar",
-      "thumbnail":"videos1/images_(2).jfif"
+      "thumbnail":"videos1/images(2).jfif"
     },
     {
       "type": "img",
