@@ -39,9 +39,9 @@
     },
     {
       "type": "img",
-      "src": "pictures/JESI_KOLLAGE_IDRIS.jpg",
-      "label": "Från Kollage.jpg",
-      "info":  "jpg",
+      "src": "pictures/JESI_KOLLAGE_IDRIS.png",
+      "label": "Från Kollage.png",
+      "info":  "png",
       "tags": "kreativt skapande,2025",
       "thumbnail": "kreativt skapande",
       "tab" : "misc"
