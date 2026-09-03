@@ -1,58 +1,32 @@
 {
   "items": [
+
     {
-      "type": "vid",
-      "src": "videos1/goarer.mov",
-      "label": "goarer.mov",
-      "info": "1280×720 · h.264 · 30fps",
-      "tags": "gore,2024",
-      "tab" : "misc film",
-      "thumbnail":"thumbnails/goarer.jpg"
+      "type": "img",
+      "src": "images (1).jfif",
+      "label": "ritning1",
+      "info": "640×480 · ritning",
+      "tags": "ritning,2025",
+      "tab" : "Ritningar",
+      "thumbnail":"ritning1"
     },
     {
-      "type": "vid",
-      "src": "videos1/MOV00539-converted.mp4",
-      "label": "MOV00539-converted.mp4",
-      "info": "640×480 · mp4",
-      "tags": "roadtrip,2025",
-      "tab" : "misc film",
-      "thumbnail":"thumbnails/MOV00539-converted.jpg"
+      "type": "img",
+      "src": "images.jfif",
+      "label": "ritning2",
+      "info": "640×480 · ritning",
+      "tags": "ritning,2025",
+      "tab" : "Ritningar",
+      "thumbnail":"ritning2"
     },
     {
-      "type": "vid",
-      "src": "videos1/MOV00619-converted.mp4",
-      "label": "MOV00619-converted.mp4",
-      "info": "640×480 · mp4",
-      "tags": "roadtrip,2025",
-      "tab" : "misc film",
-      "thumbnail":"thumbnails/MOV00619-converted.jpg"
-    },
-    {
-      "type": "vid",
-      "src": "videos1/MOV00622-converted.mp4",
-      "label": "MOV00622-converted.mp4",
-      "info": "640×480 · mp4",
-      "tags": "roadtrip,2025",
-      "tab" : "misc film",
-      "thumbnail":"thumbnails/MOV00627-converted.jpg"
-    },
-    {
-      "type": "vid",
-      "src": "videos1/MOV00627-converted.mp4",
-      "label": "MOV00627-converted.mp4",
-      "info": "640×480 · mp4",
-      "tags": "roadtrip,2025",
-      "tab" : "misc film",
-      "thumbnail":"thumbnails/MOV00627-converted.jpg"
-    },
-    {
-      "type": "vid",
-      "src": "videos1/LIFELOVER CANCERTID VISUALIZER (1).mov",
-      "label": "LIFELOVER CANCERTID VISUALIZER (1).mov",
-      "info": "1080×1920 · mov",
-      "tags": "lifelover,2025",
-      "tab" : "2025 arkitektur",
-      "thumbnail":"thumbnails/LIFELOVER CANCERTID VISUALIZER (1).jpg"
+      "type": "img",
+      "src": "images (2).jfif",
+      "label": "ritning3",
+      "info": "640×480 · ritning",
+      "tags": "ritning,2025",
+      "tab" : "Ritningar",
+      "thumbnail":"ritning3"
     },
     {
       "type": "img",
@@ -61,7 +35,16 @@
       "info": "3000×3000 · jpg",
       "tags": "inre röster,2025",
       "thumbnail": "pictures/IMG_2004.jpg",
-      "tab" : "2025 arkitektur"
+      "tab" : "misc"
+    },
+    {
+      "type": "img",
+      "src": "pictures/JESI KOLLAGE IDRIS.jpg",
+      "label": "Från Kollage.jpg",
+      "info":  "jpg",
+      "tags": "kreativt skapande,2025",
+      "thumbnail": "kreativt skapande",
+      "tab" : "misc"
     }
   ]
 }
