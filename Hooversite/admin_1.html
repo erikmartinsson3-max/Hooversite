@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEDIA_SYS / ADMIN</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:        #ffffff;
+      --accent-dim:    #cccccc;
+      --bg:            #0e0e0e;
+      --surface:       #141414;
+      --surface2:      #1a1a1a;
+      --border:        #2a2a2a;
+      --border-strong: #3a3a3a;
+      --text:          #ffffff;
+      --muted:         #666666;
+      --rec:           #cc3333;
+      --ok:            #33aa55;
+      --mono:          'Courier New', monospace;
+    }
+
+    body {
+      background: #080808;
+      font-family: var(--mono);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 860px;
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      outline: 3px solid var(--bg);
+      outline-offset: -5px;
+      padding: 1.5rem;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .site-logo { font-size: 18px; letter-spacing: 4px; text-transform: uppercase; }
+    .admin-badge {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      text-transform: uppercase;
+    }
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 320px;
+      margin: 3rem auto;
+    }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .field-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    input, select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 6px 8px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus { border-color: var(--accent-dim); }
+    input[type="password"] { letter-spacing: 2px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      background: none;
+      border: 1px solid var(--border-strong);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    .btn:hover         { color: var(--text); border-color: var(--text); }
+    .btn.btn-primary   { color: var(--text); border-color: var(--text); }
+    .btn.btn-primary:hover { background: var(--text); color: var(--bg); }
+    .btn.btn-danger    { color: var(--rec); border-color: var(--rec); }
+    .btn.btn-danger:hover  { background: var(--rec); color: var(--bg); }
+    .btn.btn-small     { padding: 4px 10px; font-size: 9px; }
+
+    /* ── STATUS BAR ── */
+    #statusBar {
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+      display: none;
+    }
+    #statusBar.ok  { color: var(--ok);  border-color: var(--ok); }
+    #statusBar.err { color: var(--rec); border-color: var(--rec); }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .toolbar-left  { display: flex; gap: 8px; align-items: center; }
+    .toolbar-right { display: flex; gap: 8px; align-items: center; }
+    .item-count { font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+
+    /* ── ITEM LIST ── */
+    #itemList { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+
+    .item-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      transition: border-color 0.15s;
+    }
+    .item-row:hover { border-color: var(--border-strong); }
+    .item-row.editing { border-color: var(--accent-dim); }
+
+    .item-handle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      color: var(--muted);
+      font-size: 12px;
+      border-right: 1px solid var(--border);
+      cursor: ns-resize;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .item-summary {
+      flex: 1;
+      padding: 8px 12px;
+      cursor: pointer;
+      min-width: 0;
+    }
+    .item-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+    .type-badge {
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .item-name {
+      font-size: 11px;
+      color: var(--text);
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .item-sub {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-left: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .item-actions .btn {
+      border: none;
+      border-left: 1px solid var(--border);
+      padding: 0 12px;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    /* ── EDIT FORM (inline, expands below the row) ── */
+    .item-edit-form {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      padding: 1rem;
+    }
+    .item-edit-form.open { display: block; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+      margin-bottom: 1rem;
+    }
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* ── ADD ITEM FORM ── */
+    #addForm {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    #addForm.open { display: block; }
+    #addForm .section-label { margin-bottom: 1rem; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px dashed var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="site-logo">MEDIA_SYS</div>
+    <span class="admin-badge">Admin Panel</span>
+    <button class="btn btn-small" id="btnLogout" style="display:none">Logout</button>
+  </header>
+
+  <!-- STATUS BAR -->
+  <div id="statusBar"></div>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen">
+    <div class="section-label">// Authentication required</div>
+    <div class="field-row">
+      <span class="field-label">Password</span>
+      <input type="password" id="passwordInput" placeholder="enter password" />
+    </div>
+    <button class="btn btn-primary" id="btnLogin">Login</button>
+  </div>
+
+  <!-- ADMIN PANEL (hidden until logged in) -->
+  <div id="adminPanel" style="display:none">
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <span class="item-count" id="itemCount">0 items</span>
+      </div>
+      <div class="toolbar-right">
+        <button class="btn" id="btnToggleAdd">+ Add Item</button>
+        <button class="btn btn-primary" id="btnSave">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- ADD ITEM FORM -->
+    <div id="addForm">
+      <div class="section-label">// New item</div>
+      <div class="form-grid">
+        <div class="field-row">
+          <span class="field-label">Type</span>
+          <select id="newType">
+            <option value="vid">vid — video</option>
+            <option value="img">img — image / photo</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Tab / Category</span>
+          <input type="text" id="newTab" placeholder="e.g. film" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Label</span>
+          <input type="text" id="newLabel" placeholder="Display name" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Source URL</span>
+          <input type="text" id="newSrc" placeholder="https://..." />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Thumbnail URL <span style="color:var(--muted)">(optional)</span></span>
+          <input type="text" id="newThumbnail" placeholder="https://..." />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Info <span style="color:var(--muted)">(optional — shown next to filename)</span></span>
+          <input type="text" id="newInfo" placeholder="e.g. 2024 · 4K" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Tags <span style="color:var(--muted)">(comma separated)</span></span>
+          <input type="text" id="newTags" placeholder="e.g. short film, 2024, bw" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" id="btnCancelAdd">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmAdd">Add Item</button>
+      </div>
+    </div>
+
+    <!-- ITEM LIST -->
+    <div id="itemList"></div>
+
+  </div><!-- /adminPanel -->
+
+</div><!-- /shell -->
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── STATE ── */
+  let items = [];   // working copy — saved on demand
+  let dirty = false;
+
+  /* ── ELEMENTS ── */
+  const loginScreen  = document.getElementById('loginScreen');
+  const adminPanel   = document.getElementById('adminPanel');
+  const passwordInput = document.getElementById('passwordInput');
+  const btnLogin     = document.getElementById('btnLogin');
+  const btnLogout    = document.getElementById('btnLogout');
+  const statusBar    = document.getElementById('statusBar');
+  const itemList     = document.getElementById('itemList');
+  const itemCount    = document.getElementById('itemCount');
+  const btnSave      = document.getElementById('btnSave');
+  const btnToggleAdd = document.getElementById('btnToggleAdd');
+  const addForm      = document.getElementById('addForm');
+  const btnConfirmAdd = document.getElementById('btnConfirmAdd');
+  const btnCancelAdd = document.getElementById('btnCancelAdd');
+
+  /* ── STATUS MESSAGES ── */
+  function showStatus(msg, type = 'ok', duration = 3000) {
+    statusBar.textContent = msg;
+    statusBar.className   = type;
+    statusBar.style.display = 'block';
+    if (duration) setTimeout(() => { statusBar.style.display = 'none'; }, duration);
+  }
+
+  /* ── AUTH ── */
+  async function login() {
+    const password = passwordInput.value;
+    if (!password) return;
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
+        loginScreen.style.display = 'none';
+        adminPanel.style.display  = '';
+        btnLogout.style.display   = '';
+        loadMedia();
+      } else {
+        showStatus('// error: wrong password', 'err');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    } catch {
+      showStatus('// error: could not reach server', 'err');
+    }
+  }
+
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    loginScreen.style.display = '';
+    adminPanel.style.display  = 'none';
+    btnLogout.style.display   = 'none';
+    items = [];
+    passwordInput.value = '';
+  }
+
+  btnLogin.addEventListener('click', login);
+  passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  btnLogout.addEventListener('click', logout);
+
+  /* ── LOAD MEDIA ── */
+  async function loadMedia() {
+    try {
+      const res  = await fetch('/api/media');
+      if (res.status === 401) { logout(); return; }
+      const data = await res.json();
+      items = data.items || [];
+      dirty = false;
+      renderList();
+      showStatus(`// loaded ${items.length} items`, 'ok');
+    } catch {
+      showStatus('// error: could not load media.json', 'err');
+    }
+  }
+
+  /* ── SAVE MEDIA ── */
+  async function saveMedia() {
+    try {
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      });
+      if (res.status === 401) { logout(); return; }
+      if (res.ok) {
+        dirty = false;
+        showStatus(`// saved — ${items.length} items written to media.json`, 'ok');
+      } else {
+        showStatus('// error: save failed', 'err', 0);
+      }
+    } catch {
+      showStatus('// error: could not reach server', 'err', 0);
+    }
+  }
+
+  btnSave.addEventListener('click', saveMedia);
+
+  /* ── WARN BEFORE LEAVING WITH UNSAVED CHANGES ── */
+  window.addEventListener('beforeunload', e => {
+    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  /* ── RENDER ITEM LIST ── */
+  function renderList() {
+    itemList.innerHTML = '';
+    itemCount.textContent = items.length + ' item' + (items.length !== 1 ? 's' : '');
+
+    if (items.length === 0) {
+      itemList.innerHTML = '<div class="empty-state">// no items — add one above</div>';
+      return;
+    }
+
+    items.forEach((item, index) => renderItem(item, index));
+  }
+
+  function renderItem(item, index) {
+    const wrapper = document.createElement('div');
+    wrapper.style.display = 'flex';
+    wrapper.style.flexDirection = 'column';
+    wrapper.dataset.index = index;
+
+    // ── ROW ──
+    const row = document.createElement('div');
+    row.className = 'item-row';
+
+    const handle = document.createElement('div');
+    handle.className  = 'item-handle';
+    handle.title      = 'Drag to reorder';
+    handle.textContent = '⠿';
+
+    const summary = document.createElement('div');
+    summary.className = 'item-summary';
+    summary.innerHTML = `
+      <div class="item-top">
+        <span class="type-badge">${item.type}</span>
+        <span class="item-name">${item.label || item.src || 'untitled'}</span>
+      </div>
+      <div class="item-sub">${item.tab || '—'} &nbsp;·&nbsp; ${item.src || ''}</div>
+    `;
+
+    const actions = document.createElement('div');
+    actions.className = 'item-actions';
+
+    const btnUp = document.createElement('button');
+    btnUp.className   = 'btn btn-small';
+    btnUp.textContent = '↑';
+    btnUp.title       = 'Move up';
+    btnUp.addEventListener('click', e => { e.stopPropagation(); moveItem(index, -1); });
+
+    const btnDown = document.createElement('button');
+    btnDown.className   = 'btn btn-small';
+    btnDown.textContent = '↓';
+    btnDown.title       = 'Move down';
+    btnDown.addEventListener('click', e => { e.stopPropagation(); moveItem(index, 1); });
+
+    const btnEdit = document.createElement('button');
+    btnEdit.className   = 'btn btn-small';
+    btnEdit.textContent = 'Edit';
+    btnEdit.addEventListener('click', e => {
+      e.stopPropagation();
+      editForm.classList.toggle('open');
+      row.classList.toggle('editing', editForm.classList.contains('open'));
+    });
+
+    const btnDel = document.createElement('button');
+    btnDel.className   = 'btn btn-small btn-danger';
+    btnDel.textContent = 'Del';
+    btnDel.addEventListener('click', e => {
+      e.stopPropagation();
+      if (confirm(`Delete "${item.label || item.src}"?`)) {
+        items.splice(index, 1);
+        dirty = true;
+        renderList();
+        showStatus('// item removed — save to persist', 'ok');
+      }
+    });
+
+    actions.appendChild(btnUp);
+    actions.appendChild(btnDown);
+    actions.appendChild(btnEdit);
+    actions.appendChild(btnDel);
+
+    row.appendChild(handle);
+    row.appendChild(summary);
+    row.appendChild(actions);
+
+    // ── INLINE EDIT FORM ──
+    const editForm = document.createElement('div');
+    editForm.className = 'item-edit-form';
+    editForm.innerHTML = `
+      <div class="form-grid">
+        <div class="field-row">
+          <span class="field-label">Type</span>
+          <select class="ef-type">
+            <option value="vid" ${item.type === 'vid' ? 'selected' : ''}>vid — video</option>
+            <option value="img" ${item.type === 'img' ? 'selected' : ''}>img — image / photo</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Tab / Category</span>
+          <input class="ef-tab" type="text" value="${item.tab || ''}" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Label</span>
+          <input class="ef-label" type="text" value="${item.label || ''}" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Source URL</span>
+          <input class="ef-src" type="text" value="${item.src || ''}" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Thumbnail URL <span style="color:var(--muted)">(optional)</span></span>
+          <input class="ef-thumbnail" type="text" value="${item.thumbnail || ''}" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Info <span style="color:var(--muted)">(optional)</span></span>
+          <input class="ef-info" type="text" value="${item.info || ''}" />
+        </div>
+        <div class="field-row full">
+          <span class="field-label">Tags <span style="color:var(--muted)">(comma separated)</span></span>
+          <input class="ef-tags" type="text" value="${item.tags || ''}" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn ef-cancel">Cancel</button>
+        <button class="btn btn-primary ef-apply">Apply</button>
+      </div>
+    `;
+
+    // Apply edits
+    editForm.querySelector('.ef-apply').addEventListener('click', () => {
+      items[index] = {
+        type:      editForm.querySelector('.ef-type').value,
+        tab:       editForm.querySelector('.ef-tab').value.trim(),
+        label:     editForm.querySelector('.ef-label').value.trim(),
+        src:       editForm.querySelector('.ef-src').value.trim(),
+        thumbnail: editForm.querySelector('.ef-thumbnail').value.trim(),
+        info:      editForm.querySelector('.ef-info').value.trim(),
+        tags:      editForm.querySelector('.ef-tags').value.trim(),
+      };
+      dirty = true;
+      renderList();
+      showStatus('// changes applied — save to persist', 'ok');
+    });
+
+    // Cancel edit
+    editForm.querySelector('.ef-cancel').addEventListener('click', () => {
+      editForm.classList.remove('open');
+      row.classList.remove('editing');
+    });
+
+    wrapper.appendChild(row);
+    wrapper.appendChild(editForm);
+    itemList.appendChild(wrapper);
+  }
+
+  /* ── MOVE ITEM ── */
+  function moveItem(index, direction) {
+    const target = index + direction;
+    if (target < 0 || target >= items.length) return;
+    [items[index], items[target]] = [items[target], items[index]];
+    dirty = true;
+    renderList();
+  }
+
+  /* ── ADD ITEM FORM ── */
+  btnToggleAdd.addEventListener('click', () => {
+    addForm.classList.toggle('open');
+    btnToggleAdd.textContent = addForm.classList.contains('open') ? '− Cancel' : '+ Add Item';
+  });
+
+  btnCancelAdd.addEventListener('click', () => {
+    addForm.classList.remove('open');
+    btnToggleAdd.textContent = '+ Add Item';
+  });
+
+  btnConfirmAdd.addEventListener('click', () => {
+    const src = document.getElementById('newSrc').value.trim();
+    if (!src) { showStatus('// error: source URL is required', 'err'); return; }
+
+    items.push({
+      type:      document.getElementById('newType').value,
+      tab:       document.getElementById('newTab').value.trim(),
+      label:     document.getElementById('newLabel').value.trim(),
+      src,
+      thumbnail: document.getElementById('newThumbnail').value.trim(),
+      info:      document.getElementById('newInfo').value.trim(),
+      tags:      document.getElementById('newTags').value.trim(),
+    });
+
+    dirty = true;
+
+    // Clear form
+    ['newTab','newLabel','newSrc','newThumbnail','newInfo','newTags'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+
+    addForm.classList.remove('open');
+    btnToggleAdd.textContent = '+ Add Item';
+    renderList();
+    showStatus('// item added — save to persist', 'ok');
+
+    // Scroll to the new item
+    setTimeout(() => {
+      const rows = itemList.querySelectorAll('[data-index]');
+      rows[rows.length - 1]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  });
+
+  /* ── AUTO-LOGIN CHECK (if cookie already set from a previous session) ── */
+  (async function checkSession() {
+    try {
+      const res = await fetch('/api/media');
+      if (res.ok) {
+        loginScreen.style.display = 'none';
+        adminPanel.style.display  = '';
+        btnLogout.style.display   = '';
+        const data = await res.json();
+        items = data.items || [];
+        dirty = false;
+        renderList();
+      }
+    } catch { /* not logged in — stay on login screen */ }
+  })();
+
+})();
+</script>
+</body>
+</html>
